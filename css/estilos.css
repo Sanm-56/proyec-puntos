@@ -356,6 +356,67 @@ nav ul li {
     margin-top: 40px;
 }
 
+/* Ocultar secciones inactivas para navegación por categorías */
+.categoria-seccion.inactive {
+    display: none;
+}
+
+.categoria-nav {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+}
+.categoria-nav a {
+    background: #ffffff;
+    padding: 8px 12px;
+    border-radius: 8px;
+    text-decoration: none;
+    color: #0f172a;
+    font-weight: 600;
+    box-shadow: 0 6px 18px rgba(15,23,42,0.06);
+}
+.categoria-nav a.active {
+    background: #16a34a;
+    color: white;
+}
+
+/* Hacer la barra de categorías sticky y visible al hacer scroll */
+.categoria-nav {
+    position: sticky;
+    top: 12px;
+    z-index: 50;
+    padding: 8px 12px;
+    backdrop-filter: blur(6px);
+}
+
+/* Ajustes responsivos para móviles */
+@media (max-width: 600px) {
+    .categoria-nav {
+        gap: 8px;
+        padding: 6px 8px;
+        top: 8px;
+    }
+    .categoria-nav a {
+        padding: 6px 8px;
+        font-size: 14px;
+    }
+    .productos-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+    .producto {
+        padding: 10px;
+    }
+}
+
+@media (max-width: 380px) {
+    .productos-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
 .boton-ver {
     padding: 6px 12px;
     font-size: 14px;

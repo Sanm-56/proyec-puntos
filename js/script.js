@@ -240,6 +240,56 @@ document.addEventListener("DOMContentLoaded", () => {
         activarModoAdmin();
         indicadorAdmin.style.display = "block";
     }
+    // Navegación por secciones: mostrar solo una categoría a la vez
+    const navLinks = document.querySelectorAll('.categoria-nav a');
+    const sections = document.querySelectorAll('#productos .categoria-seccion');
+    const mostrarTodos = document.getElementById('mostrarTodos');
+
+    function clearActiveNav() {
+        navLinks.forEach(l => l.classList.remove('active'));
+    }
+
+    function showOnlySection(id) {
+        sections.forEach(sec => {
+            if (sec.id === id) {
+                sec.classList.remove('inactive');
+                sec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            } else {
+                sec.classList.add('inactive');
+            }
+        });
+    }
+
+    navLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+            const href = link.getAttribute('href');
+            if (!href || href === '#') return; // 'Mostrar todos' handled separately
+            e.preventDefault();
+            const target = href.replace('#', '');
+            clearActiveNav();
+            link.classList.add('active');
+            showOnlySection(target);
+        });
+    });
+
+    if (mostrarTodos) {
+        mostrarTodos.addEventListener('click', (e) => {
+            e.preventDefault();
+            clearActiveNav();
+            // quitar clase inactive de todas las secciones
+            sections.forEach(sec => sec.classList.remove('inactive'));
+            window.scrollTo({ top: document.getElementById('productos').offsetTop - 20, behavior: 'smooth' });
+        });
+    }
+
+    // Mostrar la primera sección por defecto al cargar
+    if (sections.length) {
+        const defaultId = sections[0].id;
+        clearActiveNav();
+        const defaultLink = document.querySelector('.categoria-nav a[href="#' + defaultId + '"]');
+        if (defaultLink) defaultLink.classList.add('active');
+        showOnlySection(defaultId);
+    }
 });
 
 function cargarEstados() {
