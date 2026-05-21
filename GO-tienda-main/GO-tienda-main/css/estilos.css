@@ -1,0 +1,449 @@
+/* ===== RESET BÁSICO ===== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* ===== ESTILO GENERAL ===== */
+body {
+    position: relative; /* necesario para pseudo-elementos */
+    overflow-x: hidden;
+    background: linear-gradient(-45deg, #f8fafc, #e0f2fe, #d1fae5, #f0f4f8);
+    background-size: 400% 400%;
+    animation: animarFondo 20s ease infinite;
+}
+
+/* ===== ANIMACIÓN DE GRADIENTE ===== */
+@keyframes animarFondo {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* ===== PARTICULAS SOBRE EL FONDO ===== */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none; /* para que no interfiera con clicks */
+    background-image: radial-gradient(circle, rgba(255,255,255,0.3) 1px, transparent 1px);
+    background-size: 50px 50px;
+    animation: moverParticulas 60s linear infinite;
+    z-index: 0;
+}
+
+@keyframes moverParticulas {
+    0% { background-position: 0 0; }
+    100% { background-position: 1000px 1000px; }
+}
+
+/* ===== CONTENEDOR ===== */
+.contenedor {
+    width: 90%;
+    max-width: 1200px;
+    margin: auto;
+}
+
+/* ===== HEADER ===== */
+header {
+    background-color: #0f172a;
+    color: white;
+    padding: 20px 0;
+}
+
+header h1 {
+    text-align: center;
+}
+
+nav ul {
+    display: flex;
+    justify-content: center;
+    list-style: none;
+    margin-top: 10px;
+}
+
+nav ul li {
+    margin: 0 15px;
+}
+
+nav ul li a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+nav ul li a:hover {
+    color: #38bdf8;
+}
+
+/* ===== SECCIONES ===== */
+.seccion {
+    background: linear-gradient(135deg, #012570, #001e70);
+    padding: 60px 0;
+    text-align: center;
+}
+.seccion:nth-child(even) {
+    background-color: #ffffff;
+}
+
+.seccion:nth-child(odd) {
+    background-color: #f8fafc;
+}
+.seccion h2 {
+    margin-bottom: 20px;
+    color: #ffffff;
+}
+
+/* ===== PRODUCTOS ===== */
+.productos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+}
+
+.producto {
+    background: white;
+    padding: 20px;
+    border-radius: 14px;
+    box-shadow: 0 8px 25px rgba(65, 57, 57, 0.466);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+.producto:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 30px rgba(75, 63, 63, 0.301);
+}
+
+.producto .boton {
+    margin-top: auto;
+}
+
+.categoria {
+    margin-top: 60px;
+    margin-bottom: 25px;
+    font-size: 26px;
+    border-left: 6px solid #bd0505;
+    padding-left: 12px;
+}
+
+/* ===== FOOTER ===== */
+footer {
+    background-color: #0f172a;
+    color: rgb(255, 255, 255);
+    text-align: center;
+    padding: 15px 0;
+}
+.producto img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 10px;
+    margin-bottom: 15px;
+}
+
+.precio {
+    font-weight: bold;
+    margin: 10px 0;
+    color: #16a34a;
+}
+
+.boton {
+    display: inline-block;
+    padding: 10px 15px;
+    background-color: #16a34a;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background 0.3s ease;
+    width: fit-content;
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+
+
+.boton:hover {
+    background-color: #15803d;
+    transform: scale(1.05);
+}
+
+.whatsapp-float {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #25D366;
+    color: white;
+    font-size: 28px;
+    padding: 15px 18px;
+    border-radius: 50%;
+    text-decoration: none;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    transition: transform 0.3s ease;
+    z-index: 1000;
+}
+
+.whatsapp-float:hover {
+    transform: scale(1.1);
+}
+@media (max-width: 768px) {
+nav ul {
+        flex-direction: column;
+        align-items: center;
+    }
+nav ul li {
+        margin: 10px 0;
+    }
+.seccion {
+        padding: 40px 0;
+    }
+.producto img {
+        height: 180px;
+    }
+}
+
+.hero {
+    background: linear-gradient(135deg, #0f172a, #1e293b, #0f172a);
+    color: rgb(255, 241, 241);
+    padding: 110px 0;
+    text-align: center;
+}
+.hero h2 {
+    font-size: 36px;
+    margin-bottom: 15px;
+    
+}
+.hero p {
+    font-size: 18px;
+    margin-bottom: 20px;
+}
+
+.header-flex {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+}
+.logo {
+    height: 160px;
+    width: auto;
+    object-fit: contain;
+}
+.oculto-pasabocas {
+    display: none;
+}
+
+.oculto-pasabocas.mostrar {
+    display: block;
+}
+.oculto-dulceria {
+    display: none;
+}
+
+.oculto-dulceria.mostrar {
+    display: block;
+}
+.boton-carrito {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #16a34a;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 50px;
+    cursor: pointer;
+    z-index: 1000;
+}
+
+.carrito-panel {
+    position: fixed;
+    right: -350px;
+    top: 0;
+    width: 300px;
+    height: 100%;
+    background: white;
+    box-shadow: -5px 0 15px rgba(0,0,0,0.2);
+    padding: 20px;
+    transition: right 0.3s ease;
+    overflow-y: auto;
+    z-index: 999;
+}
+
+.carrito-panel.activo {
+    right: 0;
+}
+
+.carrito-panel h3 {
+    margin-bottom: 15px;
+}
+
+.total {
+    font-weight: bold;
+    margin-top: 15px;
+}
+
+.puntos-panel {
+    background: #f0fdf4;
+    border: 1px solid #bbf7d0;
+    border-radius: 8px;
+    color: #14532d;
+    margin: 14px 0;
+    padding: 12px;
+}
+
+.puntos-panel h4 {
+    margin-bottom: 8px;
+}
+
+.puntos-panel p {
+    font-size: 14px;
+    margin-bottom: 6px;
+}
+
+.regla-puntos {
+    color: #166534;
+    line-height: 1.35;
+}
+
+.redimir-puntos {
+    align-items: center;
+    display: flex;
+    gap: 8px;
+    font-size: 14px;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.redimir-puntos input {
+    accent-color: #16a34a;
+}
+
+.descuento-puntos {
+    color: #15803d;
+    font-weight: bold;
+    margin-top: 8px;
+}
+/* ===== LISTA CARRITO ===== */
+#listaCarrito {
+    list-style: none;
+    padding: 0;
+}
+
+#listaCarrito li {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    font-size: 14px;
+}
+
+#listaCarrito button {
+    background: red;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    padding: 2px 6px;
+}
+
+.categoria-flex {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 40px;
+}
+
+.boton-ver {
+    padding: 6px 12px;
+    font-size: 14px;
+}
+
+.producto {
+    position: relative;
+}
+.estado {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    padding: 6px 12px;
+    font-size: 12px;
+    font-weight: bold;
+    border-radius: 20px;
+    color: white;
+    letter-spacing: 0.5px;
+}
+
+.disponible {
+    background-color: #16a34a;
+}
+
+.agotado {
+    background-color: #dc2626;
+}
+#nosotros p {
+    color: white;
+
+}
+.btn-mayorista {
+  display: inline-block;
+  margin-top: 15px;
+  padding: 12px 25px;
+  background-color: #25D366; /* verde WhatsApp */
+  color: white;
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+.btn-mayorista:hover {
+  background-color: #1ebe5d;
+  transform: scale(1.05);
+}
+
+.selector-clientes {
+  text-align: center;
+  margin: 30px 0;
+}
+
+.selector-clientes button {
+  padding: 12px 25px;
+  margin: 10px;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.selector-clientes button:first-child {
+  background-color: #007bff;
+  color: white;
+}
+
+.selector-clientes button:last-child {
+  background-color: #25D366;
+  color: white;
+}
+
+.selector-clientes button:hover {
+  transform: scale(1.05);
+}
+
+.mensaje-selector {
+  text-align: center;
+  margin-top: 30px;
+}
+
+.mensaje-selector h3 {
+  margin-bottom: 8px;
+  font-size: 22px;
+}
+
+.mensaje-selector p {
+  font-size: 15px;
+  color: #666;
+}
