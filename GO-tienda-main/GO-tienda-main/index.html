@@ -57,7 +57,16 @@
      <section id="productos" class="seccion">
          <div class="contenedor">
         <h2>Nuestros Productos</h2>
+        <div class="categoria-nav">
+            <a href="#bebidas">Bebidas</a>
+            <a href="#pasabocas">Pasabocas</a>
+            <a href="#dulceria">Dulcería</a>
+            <a href="#galletas">Galletas</a>
+            <a href="#hogar">Hogar</a>
+            <a href="#bienestar">Bienestar</a>
+        </div>
         <!-- ================= BEBIDAS ================= -->
+        <section id="bebidas" class="categoria-seccion">
         <h3 class="categoria">🥤 Bebidas</h3>
         <div class="productos-grid">
 
@@ -181,16 +190,17 @@
 
 </div>
 
-        <!-- ================= PASABOCAS ================= -->
-        <div class="categoria-flex">
-            <h3 class="categoria">🍟 Pasabocas</h3>
-        </div>
-           <div>
-          <button id="btnPasabocas" class="boton boton-ver" onclick="togglePasabocas()">
-            Ver más
-           </button>
-        </div>
-
+    </section>
+    <!-- ================= PASABOCAS ================= -->
+        <section id="pasabocas" class="categoria-seccion">
+          <div class="categoria-flex">
+              <h3 class="categoria">🍟 Pasabocas</h3>
+          </div>
+          <div>
+              <button id="btnPasabocas" class="boton boton-ver" onclick="togglePasabocas()">
+                  Ver más
+              </button>
+          </div>
           <div class="productos-grid">
             <!-- ================= PRODUCTO 1 ================= -->
             <div class="producto">
@@ -561,21 +571,21 @@
 
 
 
-        <div class="categoria-flex">
-          <button id="btnPasabocas" class="boton boton-ver" onclick="togglePasabocas()">
-            Ver menos
-           </button>
-          </div>
-    </div>
-             <!-- ================= DULCERÍA ================= -->
-               <h3 class="categoria">🍬 Dulcería</h3>
-               <div style="text-align:center; margin-top:20px;">
-               <button id="btnDulceria" class="boton" onclick="toggleDulceria()">
-               Ver mas
-               </button>
-               </div>
-
-           <div class="productos-grid">
+                    <div class="categoria-flex">
+                        <button id="btnDulceria" class="boton boton-ver" onclick="toggleDulceria()">
+                            Ver menos
+                        </button>
+                    </div>
+                </section>
+                <!-- ================= DULCERÍA ================= -->
+                <section id="dulceria" class="categoria-seccion">
+                    <h3 class="categoria">🍬 Dulcería</h3>
+                    <div style="text-align:center; margin-top:20px;">
+                        <button id="btnDulceria" class="boton" onclick="toggleDulceria()">
+                            Ver más
+                        </button>
+                    </div>
+                    <div class="productos-grid">
             <!-- PRODCUTO 1 -->
             <div class="producto">
                 <span class="estado disponible">Disponible</span>
@@ -1177,16 +1187,18 @@
             </div>
 
 
-             <div class="categoria-flex">
-               <button id="btnDulceria" class="boton" onclick="toggleDulceria()">
-               Ver menos
-               </button>
-              </div>
-        </div>
+                    </div>
+                    <div class="categoria-flex">
+                        <button id="btnPasabocas" class="boton boton-ver" onclick="togglePasabocas()">
+                            Ver menos
+                        </button>
+                    </div>
+                </section>
 
-        <!-- ================= GALLETAS ================= -->
-        <h3 class="categoria">🍪 Galletas</h3>
-        <div class="productos-grid">
+                <!-- ================= GALLETAS ================= -->
+                <section id="galletas" class="categoria-seccion">
+                    <h3 class="categoria">🍪 Galletas</h3>
+                    <div class="productos-grid">
 
             <!-- PRODUCTO 1 -->
             <div class="producto">
@@ -1270,11 +1282,13 @@
 
             </div>
 
-        </div>
-        
-        <h2>🏠 Hogar</h2>
+                    </div>
+                </section>
 
-         <div class="productos-grid">
+                <section id="hogar" class="categoria-seccion">
+                    <h2>🏠 Hogar</h2>
+
+                    <div class="productos-grid">
             <!-- PRODUCTO 1 -->
           <div class="producto">
             <span class="estado disponible">Disponible</span>
@@ -1328,11 +1342,13 @@
 
            </div>
 
-        </div>
-        
-           <h2>💚 Bienestar</h2>
+                    </div>
+                </section>
 
-        <div class="productos-grid">
+                <section id="bienestar" class="categoria-seccion">
+                    <h2>💚 Bienestar</h2>
+
+                                <div class="productos-grid">
             <!-- PRODUCTO 1 -->
              <div class="producto">
                 <span class="estado disponible">Disponible</span>
