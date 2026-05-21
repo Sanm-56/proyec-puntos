@@ -101,18 +101,19 @@ nav ul li a:hover {
 /* ===== PRODUCTOS ===== */
 .productos-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 20px;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 16px;
 }
 
 .producto {
     background: white;
-    padding: 20px;
-    border-radius: 14px;
-    box-shadow: 0 8px 25px rgba(65, 57, 57, 0.466);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    padding: 12px;
+    border-radius: 12px;
+    box-shadow: 0 6px 18px rgba(65, 57, 57, 0.18);
+    transition: transform 0.22s ease, box-shadow 0.22s ease;
     display: flex;
     flex-direction: column;
+    min-height: 180px;
 }
 
 .producto:hover {
@@ -141,10 +142,10 @@ footer {
 }
 .producto img {
     width: 100%;
-    height: 200px;
+    height: 140px;
     object-fit: cover;
-    border-radius: 10px;
-    margin-bottom: 15px;
+    border-radius: 8px;
+    margin-bottom: 12px;
 }
 
 .precio {
@@ -201,7 +202,7 @@ nav ul li {
         padding: 40px 0;
     }
 .producto img {
-        height: 180px;
+        height: 120px;
     }
 }
 
