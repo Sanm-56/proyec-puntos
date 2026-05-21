@@ -7,11 +7,12 @@ function togglePasabocas() {
         producto.classList.toggle("mostrar");
     });
 
-    if (boton.textContent.trim() === "Ver mas") {
-    boton.textContent = "Ver menos";
-} else {
-    boton.textContent = "Ver mas";
-}
+    const texto = boton.textContent.trim().toLowerCase();
+    if (texto.includes("menos")) {
+        boton.textContent = "Ver más";
+    } else {
+        boton.textContent = "Ver menos";
+    }
 }
 function toggleDulceria() {
     const productos = document.querySelectorAll(".oculto-dulceria");
@@ -21,11 +22,12 @@ function toggleDulceria() {
         producto.classList.toggle("mostrar");
     });
 
-    if (boton.textContent.trim() === "Ver mas") {
-    boton.textContent = "Ver menos";
-} else {
-    boton.textContent = "Ver mas";
-}
+    const textoD = boton.textContent.trim().toLowerCase();
+    if (textoD.includes("menos")) {
+        boton.textContent = "Ver más";
+    } else {
+        boton.textContent = "Ver menos";
+    }
 }
 // ================= CARRITO =================
 // ================= CARRITO =================
