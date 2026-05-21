@@ -5,11 +5,23 @@
     box-sizing: border-box;
 }
 
+:root{
+    --bg-1: #f8fafc;
+    --bg-2: #e0f2fe;
+    --accent: #16a34a;
+    --muted: #64748b;
+    --card-bg: #ffffff;
+    --glass: rgba(255,255,255,0.6);
+    --shadow-1: 0 8px 30px rgba(16,24,40,0.06);
+    --radius: 12px;
+}
+
 /* ===== ESTILO GENERAL ===== */
 body {
     position: relative; /* necesario para pseudo-elementos */
     overflow-x: hidden;
-    background: linear-gradient(-45deg, #f8fafc, #e0f2fe, #d1fae5, #f0f4f8);
+    font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+    background: linear-gradient(-45deg, var(--bg-1), var(--bg-2), #d1fae5, #f0f4f8);
     background-size: 400% 400%;
     animation: animarFondo 20s ease infinite;
 }
@@ -48,6 +60,29 @@ body::before {
     margin: auto;
 }
 
+.main {
+    position: relative;
+    z-index: 10;
+}
+
+/* SVG background placement */
+.bg-shapes {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+    transform: translateZ(0);
+    animation: floatBg 18s ease-in-out infinite;
+}
+
+@keyframes floatBg {
+    0% { transform: translateY(0) scale(1); }
+    50% { transform: translateY(-8px) scale(1.01); }
+    100% { transform: translateY(0) scale(1); }
+}
+
 /* ===== HEADER ===== */
 header {
     background-color: #0f172a;
@@ -57,6 +92,8 @@ header {
 
 header h1 {
     text-align: center;
+    font-weight: 700;
+    letter-spacing: -0.5px;
 }
 
 nav ul {
@@ -98,27 +135,40 @@ nav ul li a:hover {
     color: #ffffff;
 }
 
+/* Fade-in for sections */
+.categoria-seccion {
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 420ms ease, transform 420ms cubic-bezier(.2,.9,.3,1);
+}
+.categoria-seccion.visible {
+    opacity: 1;
+    transform: none;
+}
+
 /* ===== PRODUCTOS ===== */
 .productos-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
     gap: 16px;
+    align-items: start;
 }
 
 .producto {
-    background: white;
-    padding: 12px;
-    border-radius: 12px;
-    box-shadow: 0 6px 18px rgba(65, 57, 57, 0.18);
-    transition: transform 0.22s ease, box-shadow 0.22s ease;
+    background: var(--card-bg);
+    padding: 10px;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-1);
+    transition: transform 260ms cubic-bezier(.2,.9,.3,1), box-shadow 260ms ease;
     display: flex;
     flex-direction: column;
-    min-height: 180px;
+    min-height: 170px;
+    overflow: hidden;
 }
 
 .producto:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 12px 30px rgba(75, 63, 63, 0.301);
+    transform: translateY(-6px) scale(1.01);
+    box-shadow: 0 16px 40px rgba(16,24,40,0.12);
 }
 
 .producto .boton {
@@ -146,7 +196,53 @@ footer {
     object-fit: cover;
     border-radius: 8px;
     margin-bottom: 12px;
+    display: block;
 }
+
+.producto .info {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.producto h3 {
+    font-size: 16px;
+    color: #0f172a;
+    margin-bottom: 4px;
+}
+
+.producto .precio {
+    color: var(--accent);
+    font-weight: 700;
+}
+
+/* Botones modernos */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    transition: transform 180ms ease, box-shadow 180ms ease, opacity 180ms ease;
+}
+.btn-primary {
+    background: linear-gradient(90deg, var(--accent), #059669);
+    color: #fff;
+    box-shadow: 0 8px 20px rgba(16,24,40,0.12);
+}
+.btn-primary:hover { transform: translateY(-2px); }
+.btn-ghost {
+    background: transparent;
+    color: var(--muted);
+    border: 1px solid rgba(15,23,42,0.06);
+}
+
+/* Animación de aparición para tarjetas */
+.producto { opacity: 0; transform: translateY(12px); }
+.producto.visible { opacity: 1; transform: none; transition: opacity 420ms ease, transform 420ms cubic-bezier(.2,.9,.3,1); }
 
 .precio {
     font-weight: bold;
@@ -201,9 +297,10 @@ nav ul li {
 .seccion {
         padding: 40px 0;
     }
-.producto img {
-        height: 120px;
+    .producto img {
+        height: 110px;
     }
+    .btn { padding: 7px 10px; font-size: 14px; }
 }
 
 .hero {

@@ -290,6 +290,24 @@ document.addEventListener("DOMContentLoaded", () => {
         if (defaultLink) defaultLink.classList.add('active');
         showOnlySection(defaultId);
     }
+    // IntersectionObserver para animaciones suaves de entrada
+    try {
+        const ioOptions = { root: null, rootMargin: '0px', threshold: 0.08 };
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, ioOptions);
+
+        document.querySelectorAll('.producto, .categoria-seccion').forEach(el => {
+            observer.observe(el);
+        });
+    } catch (e) {
+        // IntersectionObserver no soportado: fallback, mostrar todo
+        document.querySelectorAll('.producto, .categoria-seccion').forEach(el => el.classList.add('visible'));
+    }
 });
 
 function cargarEstados() {
