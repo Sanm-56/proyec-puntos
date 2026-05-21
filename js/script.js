@@ -62,7 +62,10 @@ usarPuntos.addEventListener("change", actualizarCarrito);
 
 // AGREGAR PRODUCTO
 botonesAgregar.forEach(boton => {
-    boton.addEventListener("click", () => {
+    boton.addEventListener("click", (e) => {
+        // animación visual
+        try { animateAddToCart(boton); } catch (err) { /* ignore animation errors */ }
+
         const nombre = boton.dataset.nombre;
         const precio = Number(boton.dataset.precio);
 
@@ -81,6 +84,56 @@ botonesAgregar.forEach(boton => {
         actualizarCarrito();
     });
 });
+
+// Ripple effect on .btn elements (event delegation)
+document.addEventListener('click', function(e) {
+    const btn = e.target.closest('.btn');
+    if (!btn) return;
+    const rect = btn.getBoundingClientRect();
+    const ripple = document.createElement('span');
+    ripple.className = 'ripple';
+    const size = Math.max(rect.width, rect.height);
+    ripple.style.width = ripple.style.height = size + 'px';
+    ripple.style.left = (e.clientX - rect.left - size/2) + 'px';
+    ripple.style.top = (e.clientY - rect.top - size/2) + 'px';
+    btn.appendChild(ripple);
+    setTimeout(() => { ripple.remove(); }, 650);
+});
+
+// Animate image flying to cart
+function animateAddToCart(button) {
+    const product = button.closest('.producto');
+    if (!product) return;
+    const img = product.querySelector('img');
+    if (!img) return;
+
+    const imgRect = img.getBoundingClientRect();
+    const cartBtn = document.getElementById('btnCarrito');
+    const cartRect = cartBtn.getBoundingClientRect();
+
+    const clone = img.cloneNode(true);
+    clone.classList.add('fly-img');
+    clone.style.width = imgRect.width + 'px';
+    clone.style.height = imgRect.height + 'px';
+    clone.style.left = imgRect.left + 'px';
+    clone.style.top = imgRect.top + 'px';
+    clone.style.opacity = '1';
+    document.body.appendChild(clone);
+
+    // Force reflow
+    clone.getBoundingClientRect();
+
+    const translateX = (cartRect.left + cartRect.width/2) - (imgRect.left + imgRect.width/2);
+    const translateY = (cartRect.top + cartRect.height/2) - (imgRect.top + imgRect.height/2);
+    clone.style.transform = `translate(${translateX}px, ${translateY}px) scale(0.18)`;
+    clone.style.opacity = '0.6';
+
+    // bounce cart
+    cartBtn.classList.add('cart-bounce');
+    setTimeout(() => cartBtn.classList.remove('cart-bounce'), 600);
+
+    setTimeout(() => { clone.remove(); }, 750);
+}
 
 // ACTUALIZAR CARRITO
 function actualizarCarrito() {
