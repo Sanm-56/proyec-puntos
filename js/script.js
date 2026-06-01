@@ -97,6 +97,16 @@ const galeriasSabores = [
         ]
     },
     {
+        productos: ["lissitazlimon"],
+        sabores: [
+            ["Limon", "img/paquetes/MINILIMO.jpeg", "lissitazlimon"],
+            ["BBQ", "img/paquetes/MINIBBQ.jpeg", "lissitazbbq"],
+            ["Hot chilli", "img/paquetes/MINIHOTCHILI.jpeg", "lissitazhotchilli"],
+            ["Mayonesa", "img/paquetes/MINIMAYO.jpeg", "lissitazmayonesa"],
+            ["Pollo", "img/paquetes/MINIPOLLO.jpeg", "lissitazpollo"]
+        ]
+    },
+    {
         productos: ["candycere"],
         sabores: [
             ["Cereza", "img/dulceria/candycere.jpeg", "candycere"],
@@ -120,16 +130,6 @@ const galeriasSabores = [
             ["Limon", "img/galletas/POKILIM.jpeg", "pokilimon"],
             ["Chocolate", "img/galletas/POKICHOCO.jpeg", "pokichocolate"],
             ["Vainilla black", "img/galletas/POKIBLACK.jpeg", "pokivainillablack"]
-        ]
-    },
-    {
-        productos: ["rulitasslimon"],
-        sabores: [
-            ["Limon", "img/paquetes/MINILIMON.jpeg", "rulitasslimon"],
-            ["BBQ", "img/paquetes/MINIBBQ.jpeg", "rulitassbbq"],
-            ["Hot chilli", "img/paquetes/MINIHOTCHILLI.png", "rulitasshotchilli"],
-            ["Mayonesa", "img/paquetes/MINIMAYO.jpeg", "rulitassmayonesa"],
-            ["Pollo", "img/paquetes/MINIPOLLO.png", "rulitasspollo"]
         ]
     }
 ];
