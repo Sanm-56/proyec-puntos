@@ -78,7 +78,6 @@
             <a href="#dulceria">Dulcería</a>
             <a href="#galletas">Galletas</a>
             <a href="#hogar">Hogar</a>
-            <a href="#bienestar">Bienestar</a>
             <a href="#" id="mostrarTodos">Mostrar todos</a>
         </div>
         <!-- ================= BEBIDAS ================= -->
@@ -194,7 +193,7 @@
 <div class="producto">
     <span class="estado disponible">Disponible</span>
     <img src="img/liquidos/aguanatur.jpg" alt="Bebidas">
-    <h4>Agua x20uni</h4>
+    <h4>600ml x 20uni</h4>
     <p>AGUA NATURAL.</p>
     <p class="precio">$16500</p>
     <a href="https://wa.me/573132082366?text=Hola,%20quiero%20informacion%20sobre%20aguanatural600ml%20en%20bebidas." target="_blank" class="boton">
@@ -212,7 +211,7 @@
           <div class="categoria-flex">
               <h3 class="categoria">🍟 Pasabocas</h3>
           </div>
-          <div>
+          <div class="control-productos">
               <button type="button" class="boton boton-ver" data-toggle-productos=".oculto-pasabocas" aria-expanded="false">
                   Ver más
               </button>
@@ -584,14 +583,17 @@
       <button class="boton agregar-carrito" data-nombre="tostomadu" data-precio="12000">Agregar</button>
 
             </div>
-
-
-
+          </div>
+          <div class="control-productos control-productos-final">
+              <button type="button" class="boton boton-ver boton-ver-menos" data-collapse-productos=".oculto-pasabocas">
+                  Ver menos
+              </button>
+          </div>
                 </section>
                 <!-- ================= DULCERÍA ================= -->
                 <section id="dulceria" class="categoria-seccion">
                     <h3 class="categoria">🍬 Dulcería</h3>
-                    <div style="text-align:center; margin-top:20px;">
+                    <div class="control-productos">
                         <button type="button" class="boton boton-ver" data-toggle-productos=".oculto-dulceria" aria-expanded="false">
                             Ver más
                         </button>
@@ -936,32 +938,6 @@
                 <button class="boton agregar-carrito" data-nombre="combi" data-precio="8000">Agregar</button>
 
             </div>
-            <!-- PRODUCTO 27 -->
-             <div class="producto oculto-dulceria">
-                <span class="estado disponible">Disponible</span>
-                <img src="img/dulceria/combifrut.jpeg" alt="Dulces">
-                <h4>cajaX16uni</h4>
-                <p>COMBINADO FRUTAL.</p>
-                <p class="precio">$8000</p>
-                <a href="https://wa.me/573132082366?text=Hola,%20quiero%20información%20sobre%20combifrut%20en%20dulces." target="_blank" class="boton">
-                    Pedir ahora
-                </a>
-                <button class="boton agregar-carrito" data-nombre="combifrut" data-precio="8000">Agregar</button>
-
-            </div>
-            <!-- PRODUCTO 28 ----->
-             <div class="producto oculto-dulceria">
-                <span class="estado disponible">Disponible</span>
-                <img src="img/dulceria/arerollo.webp" alt="Dulces">
-                <h4>cajax50uni</h4>
-                <p>ROLLO AREQUIPE.</p>
-                <p class="precio">$9800</p>
-                <a href="https://wa.me/573132082366?text=Hola,%20quiero%20información%20sobre%20arerollo%20en%20dulces." target="_blank" class="boton">
-                    Pedir ahora
-                </a>
-                <button class="boton agregar-carrito" data-nombre="arerollo" data-precio="9800">Agregar</button>
-
-            </div>
             <!-- PRODUCTO 29 -->
              <div class="producto oculto-dulceria">
                 <span class="estado disponible">Disponible</span>
@@ -1025,19 +1001,6 @@
                     Pedir ahora
                 </a>
                 <button class="boton agregar-carrito" data-nombre="bolon" data-precio="12000">Agregar</button>
-
-            </div>
-            <!-- PRODUCTO 34 -->
-             <div class="producto oculto-dulceria">
-                <span class="estado disponible">Disponible</span>
-                <img src="img/dulceria/panedia.webp" alt="Dulces">
-                <h4>cajax8uni</h4>
-                <p>PANELA-DIANITA.</p>
-                <p class="precio">$7000</p>
-                <a href="https://wa.me/573132082366?text=Hola,%20quiero%20información%20sobre%20panedia%20en%20dulces." target="_blank" class="boton">
-                    Pedir ahora
-                </a>
-                <button class="boton agregar-carrito" data-nombre="panedia" data-precio="7000">Agregar</button>
 
             </div>
             <!-- PRODUCTO 35 -->
@@ -1199,6 +1162,11 @@
 
 
                     </div>
+                    <div class="control-productos control-productos-final">
+                        <button type="button" class="boton boton-ver boton-ver-menos" data-collapse-productos=".oculto-dulceria">
+                            Ver menos
+                        </button>
+                    </div>
                 </section>
 
                 <!-- ================= GALLETAS ================= -->
@@ -1348,30 +1316,10 @@
 
            </div>
 
-                    </div>
-                </section>
-
-                <section id="bienestar" class="categoria-seccion">
-                    <h2>💚 Bienestar</h2>
-
-                                <div class="productos-grid">
-            <!-- PRODUCTO 1 -->
-             <div class="producto">
-                <span class="estado disponible">Disponible</span>
-            <img src="img/bienestar/bandejarectang.jpeg" alt="Bienestar">
-            <h3>14x19cmx12uni</h3>
-            <p>BANDEJA RECTANGULAR</p>
-            <p class="precio">$15500</p>
-                <a href="https://wa.me/573132082366?text=Hola,%20quiero%20información%20sobre%20bandejarectang%20en%20galletas." target="_blank" class="boton">
-                    Pedir ahora
-                </a>
-                <button class="boton agregar-carrito" data-nombre="bandejarectang" data-precio="15500">Agregar</button>
-
-            </div>
-            <!-- PRODUCTO 2 -->
+            <!-- PRODUCTO 5 -->
             <div class="producto">
                 <span class="estado disponible">Disponible</span>
-            <img src="img/bienestar/platohondo.jpeg" alt="Bienestar">
+            <img src="img/bienestar/platohondo.jpeg" alt="Hogar">
             <h3>14cmx12uni</h3>
             <p>PLATO HONDO</p>
             <p class="precio">$14000</p>
@@ -1384,7 +1332,7 @@
            <!-- PRODUCTO 3 -->
              <div class="producto">
                 <span class="estado disponible">Disponible</span>
-            <img src="img/bienestar/platoredomedio.jpeg" alt="Bienestar">
+            <img src="img/bienestar/platoredomedio.jpeg" alt="Hogar">
             <h3>18CMx12uni</h3>
             <p>PLATO PLANO MEDIANO</p>
             <p class="precio">$16000</p>
@@ -1397,7 +1345,7 @@
             <!-- PRODUCTO 4 -->
             <div class="producto">
                 <span class="estado disponible">Disponible</span>
-            <img src="img/bienestar/platoredopeque.jpeg" alt="Bienestar">
+            <img src="img/bienestar/platoredopeque.jpeg" alt="Hogar">
             <h3>10cmx12uni</h3>
             <p>PLATO PLANO PEQUEÑO</p>
             <p class="precio">$8500</p>
@@ -1406,8 +1354,10 @@
                 </a>
                 <button class="boton agregar-carrito" data-nombre="platoredopeque" data-precio="8500">Agregar</button>
              </div>
-          </div>
+           </div>
     </section>
+    </div>
+</section>
 <!-- PANEL CARRITO -->
 <div id="carritoPanel" class="carrito-panel">
     <h3>🛒 TU CARRITO</h3>

@@ -549,8 +549,35 @@ nav ul li {
 }
 
 .boton-ver {
-    padding: 6px 12px;
-    font-size: 14px;
+    background: linear-gradient(135deg, #16a34a, #047857);
+    border: 1px solid rgba(255, 255, 255, 0.24);
+    border-radius: 999px;
+    box-shadow: 0 8px 18px rgba(15, 118, 110, 0.28);
+    font-size: 15px;
+    font-weight: 700;
+    min-width: 150px;
+    padding: 11px 22px;
+    text-align: center;
+}
+
+.control-productos {
+    display: flex;
+    justify-content: center;
+    margin: 18px 0 24px;
+}
+
+.control-productos.oculto,
+.control-productos-final {
+    display: none;
+}
+
+.control-productos-final.mostrar {
+    display: flex;
+    margin-top: 28px;
+}
+
+.boton-ver-menos {
+    background: linear-gradient(135deg, #334155, #0f172a);
 }
 
 .producto {

@@ -15,14 +15,34 @@ function configurarPrecios() {
 }
 
 function configurarExpansores() {
+    function cambiarEstado(selector, expandido, desplazarAlInicio = false) {
+        document.querySelectorAll(selector).forEach(producto => {
+            producto.classList.toggle("mostrar", expandido);
+        });
+
+        document.querySelectorAll(`[data-toggle-productos="${selector}"]`).forEach(boton => {
+            boton.setAttribute("aria-expanded", String(expandido));
+            boton.closest(".control-productos").classList.toggle("oculto", expandido);
+
+            if (desplazarAlInicio) {
+                boton.scrollIntoView({ behavior: "smooth", block: "center" });
+            }
+        });
+
+        document.querySelectorAll(`[data-collapse-productos="${selector}"]`).forEach(boton => {
+            boton.closest(".control-productos-final").classList.toggle("mostrar", expandido);
+        });
+    }
+
     document.querySelectorAll("[data-toggle-productos]").forEach(boton => {
         boton.addEventListener("click", () => {
-            const productos = document.querySelectorAll(boton.dataset.toggleProductos);
-            const expandido = boton.getAttribute("aria-expanded") === "true";
+            cambiarEstado(boton.dataset.toggleProductos, true);
+        });
+    });
 
-            productos.forEach(producto => producto.classList.toggle("mostrar", !expandido));
-            boton.setAttribute("aria-expanded", String(!expandido));
-            boton.textContent = expandido ? "Ver más" : "Ver menos";
+    document.querySelectorAll("[data-collapse-productos]").forEach(boton => {
+        boton.addEventListener("click", () => {
+            cambiarEstado(boton.dataset.collapseProductos, false, true);
         });
     });
 }
