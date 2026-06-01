@@ -190,7 +190,6 @@ nav ul li a:hover {
     overflow: visible;
 }
 
-.producto-con-sabores:hover,
 .producto-con-sabores.galeria-fijada {
     z-index: 20;
 }
@@ -239,7 +238,6 @@ nav ul li a:hover {
     z-index: 3;
 }
 
-.producto-con-sabores:hover .galeria-sabores,
 .producto-con-sabores.galeria-fijada .galeria-sabores {
     display: grid;
 }

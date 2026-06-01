@@ -167,13 +167,12 @@ function configurarGaleriasSabores() {
         });
 
         function alternarGaleria(event) {
-            if (event.target.closest("a, button") && event.currentTarget === producto) return;
+            event.stopPropagation();
             const abierta = producto.classList.toggle("galeria-fijada");
             botonGaleria.setAttribute("aria-expanded", String(abierta));
         }
 
         botonGaleria.addEventListener("click", alternarGaleria);
-        producto.addEventListener("click", alternarGaleria);
         producto.prepend(botonGaleria);
         producto.appendChild(panel);
     });
