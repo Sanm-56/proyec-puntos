@@ -1,44 +1,62 @@
-// ================= VER MÁS / VER MENOS =================
+// ================= VER MAS / VER MENOS =================
+function toggleProductos(selector, botonId) {
+    const productos = document.querySelectorAll(selector);
+    const boton = document.getElementById(botonId);
+
+    productos.forEach(producto => producto.classList.toggle("mostrar"));
+
+    if (boton) {
+        const mostrandoProductos = [...productos].some(producto => producto.classList.contains("mostrar"));
+        boton.textContent = mostrandoProductos ? "Ver menos" : "Ver mas";
+    }
+}
+
 function togglePasabocas() {
-    const productos = document.querySelectorAll(".oculto-pasabocas");
-    const boton = document.getElementById("btnPasabocas");
-
-    productos.forEach(producto => {
-        producto.classList.toggle("mostrar");
-    });
-
-    const texto = boton.textContent.trim().toLowerCase();
-    if (texto.includes("menos")) {
-        boton.textContent = "Ver más";
-    } else {
-        boton.textContent = "Ver menos";
-    }
+    toggleProductos(".oculto-pasabocas", "btnPasabocas");
 }
+
 function toggleDulceria() {
-    const productos = document.querySelectorAll(".oculto-dulceria");
-    const boton = document.getElementById("btnDulceria");
+    toggleProductos(".oculto-dulceria", "btnDulceria");
+}
 
-    productos.forEach(producto => {
-        producto.classList.toggle("mostrar");
+// ================= CARRITO =================
+function obtenerCatalogo() {
+    const catalogo = new Map();
+
+    document.querySelectorAll(".agregar-carrito").forEach(boton => {
+        catalogo.set(boton.dataset.nombre.trim(), Number(boton.dataset.precio));
     });
 
-    const textoD = boton.textContent.trim().toLowerCase();
-    if (textoD.includes("menos")) {
-        boton.textContent = "Ver más";
-    } else {
-        boton.textContent = "Ver menos";
+    return catalogo;
+}
+
+function cargarCarrito() {
+    try {
+        const catalogo = obtenerCatalogo();
+        const carritoGuardado = JSON.parse(localStorage.getItem("carrito")) || [];
+        if (!Array.isArray(carritoGuardado)) return [];
+
+        return carritoGuardado.filter(producto =>
+            typeof producto.nombre === "string" &&
+            Number.isInteger(producto.cantidad) &&
+            producto.cantidad > 0 &&
+            catalogo.has(producto.nombre.trim())
+        ).map(producto => ({
+            nombre: producto.nombre.trim(),
+            precio: catalogo.get(producto.nombre.trim()),
+            cantidad: producto.cantidad
+        }));
+    } catch (error) {
+        localStorage.removeItem("carrito");
+        return [];
     }
 }
-// ================= CARRITO =================
-// ================= CARRITO =================
-let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
-let puntosCliente = Number(localStorage.getItem("puntosCliente")) || 0;
+
+let carrito = cargarCarrito();
 let ultimoResumenPuntos = {
     subtotal: 0,
-    descuento: 0,
     total: 0,
-    puntosGanados: 0,
-    puntosUsados: 0
+    puntosGanados: 0
 };
 
 const botonesAgregar = document.querySelectorAll(".agregar-carrito");
@@ -48,94 +66,73 @@ const totalCarrito = document.getElementById("totalCarrito");
 const contadorCarrito = document.getElementById("contadorCarrito");
 const carritoPanel = document.getElementById("carritoPanel");
 const btnCarrito = document.getElementById("btnCarrito");
-const saldoPuntos = document.getElementById("saldoPuntos");
 const puntosGanados = document.getElementById("puntosGanados");
-const descuentoPuntos = document.getElementById("descuentoPuntos");
-const usarPuntos = document.getElementById("usarPuntos");
 
-// ABRIR / CERRAR CARRITO
 btnCarrito.addEventListener("click", () => {
     carritoPanel.classList.toggle("activo");
 });
 
-usarPuntos.addEventListener("change", actualizarCarrito);
-
-// AGREGAR PRODUCTO
 botonesAgregar.forEach(boton => {
-    boton.addEventListener("click", (e) => {
-        // animación visual
-        try { animateAddToCart(boton); } catch (err) { /* ignore animation errors */ }
+    boton.addEventListener("click", () => {
+        if (boton.disabled) return;
 
-        const nombre = boton.dataset.nombre;
+        try {
+            animateAddToCart(boton);
+        } catch (error) {
+            // La animacion es decorativa y no debe bloquear el pedido.
+        }
+
+        const nombre = boton.dataset.nombre.trim();
         const precio = Number(boton.dataset.precio);
-
-        const productoExistente = carrito.find(p => p.nombre === nombre);
+        const productoExistente = carrito.find(producto => producto.nombre === nombre);
 
         if (productoExistente) {
             productoExistente.cantidad += 1;
         } else {
-            carrito.push({
-                nombre: nombre,
-                precio: precio,
-                cantidad: 1
-            });
+            carrito.push({ nombre, precio, cantidad: 1 });
         }
 
         actualizarCarrito();
     });
 });
 
-// Ripple effect on .btn elements (event delegation)
-document.addEventListener('click', function(e) {
-    const btn = e.target.closest('.btn');
-    if (!btn) return;
-    const rect = btn.getBoundingClientRect();
-    const ripple = document.createElement('span');
-    ripple.className = 'ripple';
-    const size = Math.max(rect.width, rect.height);
-    ripple.style.width = ripple.style.height = size + 'px';
-    ripple.style.left = (e.clientX - rect.left - size/2) + 'px';
-    ripple.style.top = (e.clientY - rect.top - size/2) + 'px';
-    btn.appendChild(ripple);
-    setTimeout(() => { ripple.remove(); }, 650);
-});
+function animateAddToCart(boton) {
+    const producto = boton.closest(".producto");
+    const imagen = producto && producto.querySelector("img");
+    if (!imagen) return;
 
-// Animate image flying to cart
-function animateAddToCart(button) {
-    const product = button.closest('.producto');
-    if (!product) return;
-    const img = product.querySelector('img');
-    if (!img) return;
+    const imagenRect = imagen.getBoundingClientRect();
+    const carritoRect = btnCarrito.getBoundingClientRect();
+    const clon = imagen.cloneNode(true);
 
-    const imgRect = img.getBoundingClientRect();
-    const cartBtn = document.getElementById('btnCarrito');
-    const cartRect = cartBtn.getBoundingClientRect();
+    clon.classList.add("fly-img");
+    clon.style.width = `${imagenRect.width}px`;
+    clon.style.height = `${imagenRect.height}px`;
+    clon.style.left = `${imagenRect.left}px`;
+    clon.style.top = `${imagenRect.top}px`;
+    clon.style.opacity = "1";
+    document.body.appendChild(clon);
+    clon.getBoundingClientRect();
 
-    const clone = img.cloneNode(true);
-    clone.classList.add('fly-img');
-    clone.style.width = imgRect.width + 'px';
-    clone.style.height = imgRect.height + 'px';
-    clone.style.left = imgRect.left + 'px';
-    clone.style.top = imgRect.top + 'px';
-    clone.style.opacity = '1';
-    document.body.appendChild(clone);
+    const translateX = carritoRect.left + carritoRect.width / 2 - (imagenRect.left + imagenRect.width / 2);
+    const translateY = carritoRect.top + carritoRect.height / 2 - (imagenRect.top + imagenRect.height / 2);
+    clon.style.transform = `translate(${translateX}px, ${translateY}px) scale(0.18)`;
+    clon.style.opacity = "0.6";
 
-    // Force reflow
-    clone.getBoundingClientRect();
-
-    const translateX = (cartRect.left + cartRect.width/2) - (imgRect.left + imgRect.width/2);
-    const translateY = (cartRect.top + cartRect.height/2) - (imgRect.top + imgRect.height/2);
-    clone.style.transform = `translate(${translateX}px, ${translateY}px) scale(0.18)`;
-    clone.style.opacity = '0.6';
-
-    // bounce cart
-    cartBtn.classList.add('cart-bounce');
-    setTimeout(() => cartBtn.classList.remove('cart-bounce'), 600);
-
-    setTimeout(() => { clone.remove(); }, 750);
+    btnCarrito.classList.add("cart-bounce");
+    setTimeout(() => btnCarrito.classList.remove("cart-bounce"), 600);
+    setTimeout(() => clon.remove(), 750);
 }
 
-// ACTUALIZAR CARRITO
+function crearBotonCarrito(texto, etiqueta, accion) {
+    const boton = document.createElement("button");
+    boton.type = "button";
+    boton.textContent = texto;
+    boton.setAttribute("aria-label", etiqueta);
+    boton.addEventListener("click", accion);
+    return boton;
+}
+
 function actualizarCarrito() {
     listaCarrito.innerHTML = "";
     let subtotal = 0;
@@ -143,42 +140,39 @@ function actualizarCarrito() {
 
     carrito.forEach((producto, index) => {
         const li = document.createElement("li");
+        const descripcion = document.createElement("span");
+        descripcion.textContent = `${producto.nombre} - $${producto.precio} x${producto.cantidad}`;
 
-        li.innerHTML = `
-            ${producto.nombre} - $${producto.precio} x${producto.cantidad}
-            <button onclick="restarCantidad(${index})">➖</button>
-            <button onclick="eliminarProducto(${index})">❌</button>
-        `;
+        const botonRestar = crearBotonCarrito(
+            "-",
+            `Restar una unidad de ${producto.nombre}`,
+            () => restarCantidad(index)
+        );
+        const botonEliminar = crearBotonCarrito(
+            "X",
+            `Eliminar ${producto.nombre} del carrito`,
+            () => eliminarProducto(index)
+        );
 
+        li.append(descripcion, botonRestar, botonEliminar);
         listaCarrito.appendChild(li);
 
         subtotal += producto.precio * producto.cantidad;
         cantidadTotal += producto.cantidad;
     });
 
-          const puntosRedimibles = usarPuntos.checked ? Math.floor(puntosCliente / 100) * 100 : 0;
-          const maximoPorSubtotal = Math.floor(subtotal / 1000) * 100;
-          const puntosUsados = Math.min(puntosRedimibles, maximoPorSubtotal);
-          const descuento = (puntosUsados / 100) * 1000;
-          const total = Math.max(subtotal - descuento, 0);
-          const puntosDelPedido = Math.floor(total / 1000);
+    const puntosDelPedido = Math.floor(subtotal / 1000);
+    ultimoResumenPuntos = {
+        subtotal,
+        total: subtotal,
+        puntosGanados: puntosDelPedido
+    };
 
-          ultimoResumenPuntos = {
-              subtotal: subtotal,
-              descuento: descuento,
-              total: total,
-              puntosGanados: puntosDelPedido,
-              puntosUsados: puntosUsados
-          };
-
-          subtotalCarrito.textContent = subtotal;
-          descuentoPuntos.textContent = descuento;
-          totalCarrito.textContent = total;
-          contadorCarrito.textContent = cantidadTotal;
-          saldoPuntos.textContent = puntosCliente;
-          puntosGanados.textContent = puntosDelPedido;
-          localStorage.setItem("carrito", JSON.stringify(carrito));
-          
+    subtotalCarrito.textContent = subtotal;
+    totalCarrito.textContent = subtotal;
+    contadorCarrito.textContent = cantidadTotal;
+    puntosGanados.textContent = puntosDelPedido;
+    localStorage.setItem("carrito", JSON.stringify(carrito));
 }
 
 function eliminarProducto(index) {
@@ -198,234 +192,136 @@ function restarCantidad(index) {
 
 function vaciarCarrito() {
     carrito = [];
-    usarPuntos.checked = false;
     actualizarCarrito();
 }
 
-// ENVIAR PEDIDO A WHATSAPP
+// ================= ENVIAR PEDIDO A WHATSAPP =================
 function enviarPedido() {
     if (carrito.length === 0) {
-        alert("El carrito está vacío");
+        alert("El carrito esta vacio");
         return;
     }
 
-    let mensaje = "🛒 *NUEVO PEDIDO* %0A%0A";
+    let mensaje = "*NUEVO PEDIDO*\n\n";
 
     carrito.forEach(producto => {
-        mensaje += `📦 ${producto.nombre}%0A`;
-        mensaje += `   Cantidad: ${producto.cantidad}%0A`;
-        mensaje += `   Precio unitario: $${producto.precio}%0A`;
-        mensaje += `   Subtotal: $${producto.precio * producto.cantidad}%0A%0A`;
+        mensaje += `${producto.nombre}\n`;
+        mensaje += `   Cantidad: ${producto.cantidad}\n`;
+        mensaje += `   Precio unitario: $${producto.precio}\n`;
+        mensaje += `   Subtotal: $${producto.precio * producto.cantidad}\n\n`;
     });
 
-    mensaje += `Subtotal: $${ultimoResumenPuntos.subtotal}%0A`;
+    mensaje += `Subtotal: $${ultimoResumenPuntos.subtotal}\n`;
+    mensaje += `*TOTAL: $${ultimoResumenPuntos.total}*\n`;
+    mensaje += `Puntos estimados con este pedido: ${ultimoResumenPuntos.puntosGanados}`;
 
-    if (ultimoResumenPuntos.puntosUsados > 0) {
-        mensaje += `Puntos redimidos: ${ultimoResumenPuntos.puntosUsados}%0A`;
-        mensaje += `Descuento por puntos: -$${ultimoResumenPuntos.descuento}%0A`;
-    }
-
-    mensaje += `💰 *TOTAL: $${ultimoResumenPuntos.total}*%0A`;
-    mensaje += `Puntos ganados con este pedido: ${ultimoResumenPuntos.puntosGanados}%0A`;
-    mensaje += `Saldo de puntos despues del pedido: ${puntosCliente - ultimoResumenPuntos.puntosUsados + ultimoResumenPuntos.puntosGanados}`;
-
-    puntosCliente = puntosCliente - ultimoResumenPuntos.puntosUsados + ultimoResumenPuntos.puntosGanados;
-    localStorage.setItem("puntosCliente", puntosCliente);
     carrito = [];
-    usarPuntos.checked = false;
     actualizarCarrito();
 
-    window.open(`https://wa.me/573132082366?text=${mensaje}`, "_blank");
+    window.open(
+        `https://wa.me/573132082366?text=${encodeURIComponent(mensaje)}`,
+        "_blank",
+        "noopener,noreferrer"
+    );
 }
-actualizarCarrito();
 
-// ================= ADMIN OCULTO PRO =================
+// ================= DISPONIBILIDAD =================
+function cargarDisponibilidad() {
+    document.querySelectorAll(".producto").forEach(producto => {
+        const estado = producto.querySelector(".estado");
+        const botonAgregar = producto.querySelector(".agregar-carrito");
+        const enlacePedido = producto.querySelector("a.boton");
+        const agotado = estado && estado.classList.contains("agotado");
 
-const claveAdmin = "841026";
-let modoAdmin = localStorage.getItem("modoAdmin") === "true";
+        if (!agotado) return;
 
-// Crear indicador visual
-const indicadorAdmin = document.createElement("div");
-indicadorAdmin.textContent = "🔐 Modo Admin Activo";
-indicadorAdmin.style.position = "fixed";
-indicadorAdmin.style.top = "10px";
-indicadorAdmin.style.right = "10px";
-indicadorAdmin.style.background = "#111";
-indicadorAdmin.style.color = "#fff";
-indicadorAdmin.style.padding = "6px 10px";
-indicadorAdmin.style.borderRadius = "6px";
-indicadorAdmin.style.fontSize = "12px";
-indicadorAdmin.style.zIndex = "3000";
-indicadorAdmin.style.display = "none";
-document.body.appendChild(indicadorAdmin);
-
-// Activar con teclado secreto
-document.addEventListener("keydown", function(e) {
-    if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === "ñ") {
-        const clave = prompt("Ingrese clave de administrador:");
-
-        if (clave === claveAdmin) {
-            modoAdmin = true;
-            localStorage.setItem("modoAdmin", "true");
-            activarModoAdmin();
-            indicadorAdmin.style.display = "block";
-            alert("Modo administrador activado");
-        } else {
-            alert("Clave incorrecta");
+        estado.textContent = "Agotado";
+        if (botonAgregar) {
+            botonAgregar.disabled = true;
+            botonAgregar.textContent = "Agotado";
         }
-    }
-});
+        if (enlacePedido) {
+            enlacePedido.classList.add("boton-agotado");
+            enlacePedido.setAttribute("aria-disabled", "true");
+            enlacePedido.removeAttribute("href");
+        }
+    });
+}
 
-// Cerrar admin con Ctrl + Shift + Q
-document.addEventListener("keydown", function(e) {
-    if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === "q") {
-        modoAdmin = false;
-        localStorage.removeItem("modoAdmin");
-        indicadorAdmin.style.display = "none";
-        alert("Modo administrador desactivado");
-    }
-});
-
-// Cargar estados al iniciar
+// ================= NAVEGACION Y ANIMACIONES =================
 document.addEventListener("DOMContentLoaded", () => {
-    cargarEstados();
-    if (modoAdmin) {
-        activarModoAdmin();
-        indicadorAdmin.style.display = "block";
-    }
-    // Navegación por secciones: mostrar solo una categoría a la vez
-    const navLinks = document.querySelectorAll('.categoria-nav a');
-    const sections = document.querySelectorAll('#productos .categoria-seccion');
-    const mostrarTodos = document.getElementById('mostrarTodos');
+    cargarDisponibilidad();
+
+    document.querySelectorAll('a[target="_blank"]').forEach(enlace => {
+        enlace.setAttribute("rel", "noopener noreferrer");
+    });
+
+    const navLinks = document.querySelectorAll(".categoria-nav a");
+    const sections = document.querySelectorAll("#productos .categoria-seccion");
+    const mostrarTodos = document.getElementById("mostrarTodos");
 
     function clearActiveNav() {
-        navLinks.forEach(l => l.classList.remove('active'));
+        navLinks.forEach(link => link.classList.remove("active"));
     }
 
     function showOnlySection(id) {
-        sections.forEach(sec => {
-            if (sec.id === id) {
-                sec.classList.remove('inactive');
-                sec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        sections.forEach(section => {
+            if (section.id === id) {
+                section.classList.remove("inactive");
+                section.scrollIntoView({ behavior: "smooth", block: "start" });
             } else {
-                sec.classList.add('inactive');
+                section.classList.add("inactive");
             }
         });
     }
 
     navLinks.forEach(link => {
-        link.addEventListener('click', (e) => {
-            const href = link.getAttribute('href');
-            if (!href || href === '#') return; // 'Mostrar todos' handled separately
-            e.preventDefault();
-            const target = href.replace('#', '');
+        link.addEventListener("click", event => {
+            const href = link.getAttribute("href");
+            if (!href || href === "#") return;
+
+            event.preventDefault();
             clearActiveNav();
-            link.classList.add('active');
-            showOnlySection(target);
+            link.classList.add("active");
+            showOnlySection(href.replace("#", ""));
         });
     });
 
     if (mostrarTodos) {
-        mostrarTodos.addEventListener('click', (e) => {
-            e.preventDefault();
+        mostrarTodos.addEventListener("click", event => {
+            event.preventDefault();
             clearActiveNav();
-            // quitar clase inactive de todas las secciones
-            sections.forEach(sec => sec.classList.remove('inactive'));
-            window.scrollTo({ top: document.getElementById('productos').offsetTop - 20, behavior: 'smooth' });
+            sections.forEach(section => section.classList.remove("inactive"));
+            window.scrollTo({
+                top: document.getElementById("productos").offsetTop - 20,
+                behavior: "smooth"
+            });
         });
     }
 
-    // Mostrar la primera sección por defecto al cargar
     if (sections.length) {
         const defaultId = sections[0].id;
+        const defaultLink = document.querySelector(`.categoria-nav a[href="#${defaultId}"]`);
         clearActiveNav();
-        const defaultLink = document.querySelector('.categoria-nav a[href="#' + defaultId + '"]');
-        if (defaultLink) defaultLink.classList.add('active');
+        if (defaultLink) defaultLink.classList.add("active");
         showOnlySection(defaultId);
     }
-    // IntersectionObserver para animaciones suaves de entrada
-    try {
-        const ioOptions = { root: null, rootMargin: '0px', threshold: 0.08 };
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
-            });
-        }, ioOptions);
 
-        document.querySelectorAll('.producto, .categoria-seccion').forEach(el => {
-            observer.observe(el);
+    try {
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) entry.target.classList.add("visible");
+            });
+        }, { root: null, rootMargin: "0px", threshold: 0.08 });
+
+        document.querySelectorAll(".producto, .categoria-seccion").forEach(elemento => {
+            observer.observe(elemento);
         });
-    } catch (e) {
-        // IntersectionObserver no soportado: fallback, mostrar todo
-        document.querySelectorAll('.producto, .categoria-seccion').forEach(el => el.classList.add('visible'));
+    } catch (error) {
+        document.querySelectorAll(".producto, .categoria-seccion").forEach(elemento => {
+            elemento.classList.add("visible");
+        });
     }
 });
 
-function cargarEstados() {
-    document.querySelectorAll(".producto").forEach((producto, index) => {
-
-        const estado = producto.querySelector(".estado");
-        const botonAgregar = producto.querySelector(".agregar-carrito");
-
-        const idProducto = "estado_producto_" + index;
-        const estadoGuardado = localStorage.getItem(idProducto);
-
-        if (estadoGuardado === "agotado") {
-            aplicarAgotado(estado, botonAgregar);
-        } else {
-            aplicarDisponible(estado, botonAgregar);
-        }
-
-        estado.addEventListener("click", () => {
-            if (!modoAdmin) return;
-
-            if (estado.classList.contains("disponible")) {
-                aplicarAgotado(estado, botonAgregar);
-                localStorage.setItem(idProducto, "agotado");
-            } else {
-                aplicarDisponible(estado, botonAgregar);
-                localStorage.setItem(idProducto, "disponible");
-            }
-        });
-    });
-}
-
-function activarModoAdmin() {
-    document.querySelectorAll(".estado").forEach(e => {
-        e.style.cursor = "pointer";
-    });
-}
-
-function aplicarAgotado(estado, botonAgregar) {
-    estado.classList.remove("disponible");
-    estado.classList.add("agotado");
-    estado.textContent = "Agotado";
-
-    if (botonAgregar) {
-        botonAgregar.disabled = true;
-        botonAgregar.textContent = "Agotado";
-    }
-}
-
-function aplicarDisponible(estado, botonAgregar) {
-    estado.classList.remove("agotado");
-    estado.classList.add("disponible");
-    estado.textContent = "Disponible";
-
-    if (botonAgregar) {
-        botonAgregar.disabled = false;
-        botonAgregar.textContent = "Agregar";
-    }
-}
-
-function mostrarDetal() {
-  document.getElementById("detal").style.display = "block";
-  document.getElementById("mayorista").style.display = "none";
-}
-
-function mostrarMayorista() {
-  document.getElementById("detal").style.display = "none";
-  document.getElementById("mayorista").style.display = "block";
-}
+actualizarCarrito();
