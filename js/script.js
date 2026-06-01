@@ -1,22 +1,30 @@
-// ================= VER MAS / VER MENOS =================
-function toggleProductos(selector, botonId) {
-    const productos = document.querySelectorAll(selector);
-    const boton = document.getElementById(botonId);
-
-    productos.forEach(producto => producto.classList.toggle("mostrar"));
-
-    if (boton) {
-        const mostrandoProductos = [...productos].some(producto => producto.classList.contains("mostrar"));
-        boton.textContent = mostrandoProductos ? "Ver menos" : "Ver mas";
-    }
+// ================= FORMATO Y EXPANSORES =================
+function formatearPrecio(valor) {
+    return `$${Number(valor).toLocaleString("es-CO")}`;
 }
 
-function togglePasabocas() {
-    toggleProductos(".oculto-pasabocas", "btnPasabocas");
+function configurarPrecios() {
+    document.querySelectorAll(".producto").forEach(producto => {
+        const precio = producto.querySelector(".precio");
+        const botonAgregar = producto.querySelector(".agregar-carrito");
+
+        if (precio && botonAgregar) {
+            precio.textContent = formatearPrecio(botonAgregar.dataset.precio);
+        }
+    });
 }
 
-function toggleDulceria() {
-    toggleProductos(".oculto-dulceria", "btnDulceria");
+function configurarExpansores() {
+    document.querySelectorAll("[data-toggle-productos]").forEach(boton => {
+        boton.addEventListener("click", () => {
+            const productos = document.querySelectorAll(boton.dataset.toggleProductos);
+            const expandido = boton.getAttribute("aria-expanded") === "true";
+
+            productos.forEach(producto => producto.classList.toggle("mostrar", !expandido));
+            boton.setAttribute("aria-expanded", String(!expandido));
+            boton.textContent = expandido ? "Ver más" : "Ver menos";
+        });
+    });
 }
 
 // ================= CARRITO =================
@@ -141,7 +149,7 @@ function actualizarCarrito() {
     carrito.forEach((producto, index) => {
         const li = document.createElement("li");
         const descripcion = document.createElement("span");
-        descripcion.textContent = `${producto.nombre} - $${producto.precio} x${producto.cantidad}`;
+        descripcion.textContent = `${producto.nombre} - ${formatearPrecio(producto.precio)} x${producto.cantidad}`;
 
         const botonRestar = crearBotonCarrito(
             "-",
@@ -168,8 +176,8 @@ function actualizarCarrito() {
         puntosGanados: puntosDelPedido
     };
 
-    subtotalCarrito.textContent = subtotal;
-    totalCarrito.textContent = subtotal;
+    subtotalCarrito.textContent = subtotal.toLocaleString("es-CO");
+    totalCarrito.textContent = subtotal.toLocaleString("es-CO");
     contadorCarrito.textContent = cantidadTotal;
     puntosGanados.textContent = puntosDelPedido;
     localStorage.setItem("carrito", JSON.stringify(carrito));
@@ -207,12 +215,12 @@ function enviarPedido() {
     carrito.forEach(producto => {
         mensaje += `${producto.nombre}\n`;
         mensaje += `   Cantidad: ${producto.cantidad}\n`;
-        mensaje += `   Precio unitario: $${producto.precio}\n`;
-        mensaje += `   Subtotal: $${producto.precio * producto.cantidad}\n\n`;
+        mensaje += `   Precio unitario: ${formatearPrecio(producto.precio)}\n`;
+        mensaje += `   Subtotal: ${formatearPrecio(producto.precio * producto.cantidad)}\n\n`;
     });
 
-    mensaje += `Subtotal: $${ultimoResumenPuntos.subtotal}\n`;
-    mensaje += `*TOTAL: $${ultimoResumenPuntos.total}*\n`;
+    mensaje += `Subtotal: ${formatearPrecio(ultimoResumenPuntos.subtotal)}\n`;
+    mensaje += `*TOTAL: ${formatearPrecio(ultimoResumenPuntos.total)}*\n`;
     mensaje += `Puntos estimados con este pedido: ${ultimoResumenPuntos.puntosGanados}`;
 
     carrito = [];
@@ -250,6 +258,8 @@ function cargarDisponibilidad() {
 
 // ================= NAVEGACION Y ANIMACIONES =================
 document.addEventListener("DOMContentLoaded", () => {
+    configurarPrecios();
+    configurarExpansores();
     cargarDisponibilidad();
 
     document.querySelectorAll('a[target="_blank"]').forEach(enlace => {
