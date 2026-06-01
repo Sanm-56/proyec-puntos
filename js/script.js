@@ -161,6 +161,8 @@ function configurarGaleriasSabores() {
                 if (descripcion) {
                     descripcion.textContent = descripcion.textContent.replace(/-[^-.\s]+\.?$/, `-${nombre.toUpperCase()}.`);
                 }
+                producto.classList.remove("galeria-fijada");
+                botonGaleria.setAttribute("aria-expanded", "false");
             });
 
             panel.appendChild(opcion);
