@@ -111,6 +111,16 @@ const galeriasSabores = [
             ["Negro", "img/galletas/galleneg77.jpeg", "galleneg77"],
             ["Fresa", "img/galletas/galletafresa77.jpg", "galletafresa77"]
         ]
+    },
+    {
+        productos: ["gallepoki"],
+        sabores: [
+            ["Vainilla", "img/galletas/POKIVAI.jpeg", "pokivainilla"],
+            ["Fresa", "img/galletas/POKIFRESA.jpeg", "pokifresa"],
+            ["Limon", "img/galletas/POKILIM.jpeg", "pokilimon"],
+            ["Chocolate", "img/galletas/POKICHOCO.jpeg", "pokichocolate"],
+            ["Vainilla black", "img/galletas/POKIBLACK.jpeg", "pokivainillablack"]
+        ]
     }
 ];
 
