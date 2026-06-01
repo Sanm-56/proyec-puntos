@@ -171,8 +171,19 @@ nav ul li a:hover {
     box-shadow: 0 16px 40px rgba(16,24,40,0.12);
 }
 
-.producto .boton {
+.producto > .boton {
+    border: none;
+    cursor: pointer;
+    text-align: center;
+    width: 100%;
+}
+
+.producto > a.boton {
     margin-top: auto;
+}
+
+.producto > .agregar-carrito {
+    margin-top: 8px;
 }
 
 .categoria {
@@ -320,14 +331,7 @@ footer {
     transform: scale(1.1);
 }
 @media (max-width: 768px) {
-nav ul {
-        flex-direction: column;
-        align-items: center;
-    }
-nav ul li {
-        margin: 10px 0;
-    }
-.seccion {
+    .seccion {
         padding: 40px 0;
     }
     .producto img {
@@ -524,27 +528,157 @@ nav ul li {
 
 /* Ajustes responsivos para móviles */
 @media (max-width: 600px) {
+    .contenedor {
+        width: 94%;
+    }
+    header {
+        padding: 8px 0;
+    }
+    .header-flex {
+        flex-wrap: wrap;
+        gap: 6px 10px;
+    }
+    .logo {
+        height: 64px;
+    }
+    header h1 {
+        font-size: 20px;
+    }
+    nav {
+        order: 3;
+        overflow-x: auto;
+        scrollbar-width: none;
+        width: 100%;
+    }
+    nav::-webkit-scrollbar {
+        display: none;
+    }
+    nav ul {
+        flex-direction: row;
+        justify-content: flex-start;
+        margin-top: 0;
+        min-width: max-content;
+    }
+    nav ul li {
+        margin: 0 7px;
+    }
+    nav ul li a {
+        font-size: 13px;
+    }
+    .hero {
+        padding: 56px 0;
+    }
+    .hero h2 {
+        font-size: 25px;
+    }
+    .hero p {
+        font-size: 15px;
+    }
+    .seccion {
+        padding: 30px 0;
+    }
     .categoria-nav {
-        gap: 8px;
-        padding: 6px 8px;
+        flex-wrap: nowrap;
+        gap: 7px;
+        justify-content: flex-start;
+        margin-inline: -3%;
+        overflow-x: auto;
+        padding: 6px 3%;
+        scrollbar-width: none;
         top: 8px;
     }
+    .categoria-nav::-webkit-scrollbar {
+        display: none;
+    }
     .categoria-nav a {
+        flex: 0 0 auto;
         padding: 6px 8px;
-        font-size: 14px;
+        font-size: 12px;
     }
     .productos-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 10px;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 7px;
     }
     .producto {
-        padding: 10px;
+        border-radius: 9px;
+        min-height: 0;
+        padding: 6px;
+    }
+    .producto img {
+        border-radius: 6px;
+        height: 82px;
+        margin-bottom: 6px;
+    }
+    .producto h3,
+    .producto h4 {
+        display: -webkit-box;
+        font-size: 11px;
+        line-height: 1.2;
+        margin-bottom: 3px;
+        min-height: 26px;
+        overflow: hidden;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+    }
+    .producto p:not(.precio) {
+        display: -webkit-box;
+        font-size: 10px;
+        line-height: 1.2;
+        min-height: 24px;
+        overflow: hidden;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+    }
+    .producto .precio {
+        font-size: 13px;
+        margin: 6px 0;
+    }
+    .producto > a.boton {
+        display: none;
+    }
+    .producto > .agregar-carrito {
+        font-size: 11px;
+        margin-top: auto;
+        min-height: 36px;
+        padding: 7px 3px;
+        width: 100%;
+    }
+    .estado {
+        font-size: 9px;
+        left: 5px;
+        letter-spacing: 0;
+        padding: 3px 6px;
+        top: 5px;
+    }
+    .categoria {
+        font-size: 21px;
+        margin-top: 35px;
+    }
+    .boton-carrito {
+        padding: 9px 12px;
+        right: 10px;
+        top: 10px;
+    }
+    .carrito-panel {
+        max-width: 340px;
+        right: -100%;
+        width: 92vw;
+    }
+    .whatsapp-float {
+        bottom: 14px;
+        font-size: 22px;
+        padding: 11px 14px;
+        right: 14px;
     }
 }
 
-@media (max-width: 380px) {
+@media (max-width: 359px) {
     .productos-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px;
+    }
+    .producto img {
+        height: 92px;
     }
 }
 
