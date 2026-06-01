@@ -103,6 +103,14 @@ const galeriasSabores = [
             ["Manzana", "img/dulceria/candymanz.jpeg", "candymanz"],
             ["Mora", "img/dulceria/candymora.jpeg", "candymora"]
         ]
+    },
+    {
+        productos: ["galleblanc77"],
+        sabores: [
+            ["Blanco", "img/galletas/galleblanc77.jpeg", "galleblanc77"],
+            ["Negro", "img/galletas/galleneg77.jpeg", "galleneg77"],
+            ["Fresa", "img/galletas/galletafresa77.jpg", "galletafresa77"]
+        ]
     }
 ];
 
