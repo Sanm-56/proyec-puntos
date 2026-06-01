@@ -47,6 +47,137 @@ function configurarExpansores() {
     });
 }
 
+const galeriasSabores = [
+    {
+        productos: ["gritsnat9", "gritspol9", "gritscara9", "gritspic9"],
+        sabores: [
+            ["Natural", "img/paquetes/gritsnat9.jpeg"],
+            ["Caramelo", "img/paquetes/gritscara9.jpeg"],
+            ["Picante", "img/paquetes/gritspic9.jpeg"]
+        ]
+    },
+    {
+        productos: ["gristcara33", "gritspic33", "gritsque33", "gritsnat33"],
+        sabores: [
+            ["Caramelo", "img/paquetes/gristcara33.jpeg"],
+            ["Picante", "img/paquetes/gritspic33.jpeg"],
+            ["Queso", "img/paquetes/gritsque33.jpeg"],
+            ["Natural", "img/paquetes/gritsnat33.jpeg"]
+        ]
+    },
+    {
+        productos: ["gritsque50", "gritsnat50"],
+        sabores: [
+            ["Queso", "img/paquetes/gritsque50.jpeg"],
+            ["Natural", "img/paquetes/gritsnat50.jpeg"]
+        ]
+    },
+    {
+        productos: ["toclim", "tocpic", "tocmie"],
+        sabores: [
+            ["Limon", "img/paquetes/toclim.jpeg"],
+            ["Picante", "img/paquetes/tocpic.jpeg"],
+            ["Miel", "img/paquetes/tocmie.jpeg"]
+        ]
+    },
+    {
+        productos: ["troclim", "trocpic", "trocpol"],
+        sabores: [
+            ["Limon", "img/paquetes/troclim.jpeg"],
+            ["Picante", "img/paquetes/trocpic.jpeg"],
+            ["Pollo", "img/paquetes/trocpol.jpeg"]
+        ]
+    },
+    {
+        productos: ["tostolim", "tostomadu"],
+        sabores: [
+            ["Limon", "img/paquetes/tostolim.jpeg"],
+            ["Maduro", "img/paquetes/tostomadu.jpeg"]
+        ]
+    },
+    {
+        productos: ["candycere", "candymanz", "candymora"],
+        sabores: [
+            ["Cereza", "img/dulceria/candycere.jpeg"],
+            ["Manzana", "img/dulceria/candymanz.jpeg"],
+            ["Mora", "img/dulceria/candymora.jpeg"]
+        ]
+    }
+];
+
+function configurarGaleriasSabores() {
+    const galeriasPorProducto = new Map();
+
+    galeriasSabores.forEach(galeria => {
+        galeria.productos.forEach(nombre => galeriasPorProducto.set(nombre, galeria.sabores));
+    });
+
+    document.querySelectorAll(".agregar-carrito").forEach((botonAgregar, index) => {
+        const sabores = galeriasPorProducto.get(botonAgregar.dataset.nombre.trim());
+        const producto = botonAgregar.closest(".producto");
+        if (!sabores || !producto) return;
+
+        const imagenPrincipal = producto.querySelector("img");
+        const botonGaleria = document.createElement("button");
+        const panel = document.createElement("div");
+        const panelId = `galeria-sabores-${index}`;
+
+        producto.classList.add("producto-con-sabores");
+        botonGaleria.type = "button";
+        botonGaleria.className = "boton-sabores";
+        botonGaleria.setAttribute("aria-controls", panelId);
+        botonGaleria.setAttribute("aria-expanded", "false");
+        botonGaleria.setAttribute("aria-label", "Ver sabores disponibles");
+        botonGaleria.textContent = "+";
+
+        panel.id = panelId;
+        panel.className = "galeria-sabores";
+        panel.setAttribute("aria-label", "Sabores disponibles");
+
+        sabores.forEach(([nombre, imagen]) => {
+            const opcion = document.createElement("button");
+            const miniatura = document.createElement("img");
+            const etiqueta = document.createElement("span");
+
+            opcion.type = "button";
+            opcion.className = "sabor-opcion";
+            opcion.setAttribute("aria-label", `Ver sabor ${nombre}`);
+            miniatura.src = imagen;
+            miniatura.alt = nombre;
+            etiqueta.textContent = nombre;
+            opcion.append(miniatura, etiqueta);
+
+            opcion.addEventListener("click", event => {
+                event.stopPropagation();
+                imagenPrincipal.src = imagen;
+                imagenPrincipal.alt = `Producto sabor ${nombre}`;
+            });
+
+            panel.appendChild(opcion);
+        });
+
+        function alternarGaleria(event) {
+            if (event.target.closest("a, button") && event.currentTarget === producto) return;
+            const abierta = producto.classList.toggle("galeria-fijada");
+            botonGaleria.setAttribute("aria-expanded", String(abierta));
+        }
+
+        botonGaleria.addEventListener("click", alternarGaleria);
+        producto.addEventListener("click", alternarGaleria);
+        producto.prepend(botonGaleria);
+        producto.appendChild(panel);
+    });
+
+    document.addEventListener("click", event => {
+        document.querySelectorAll(".producto-con-sabores.galeria-fijada").forEach(producto => {
+            if (producto.contains(event.target)) return;
+
+            producto.classList.remove("galeria-fijada");
+            producto.querySelector(".boton-sabores").setAttribute("aria-expanded", "false");
+        });
+    });
+}
+
 // ================= CARRITO =================
 function obtenerCatalogo() {
     const catalogo = new Map();
@@ -280,6 +411,7 @@ function cargarDisponibilidad() {
 document.addEventListener("DOMContentLoaded", () => {
     configurarPrecios();
     configurarExpansores();
+    configurarGaleriasSabores();
     cargarDisponibilidad();
 
     document.querySelectorAll('a[target="_blank"]').forEach(enlace => {
