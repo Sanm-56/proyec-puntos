@@ -270,6 +270,17 @@ nav ul li a:hover {
     white-space: nowrap;
 }
 
+.sabor-opcion.sabor-agotado {
+    background: #fee2e2;
+    border-color: #fca5a5;
+    color: #991b1b;
+    opacity: 0.78;
+}
+
+.sabor-opcion.sabor-agotado span::after {
+    content: " - agotado";
+}
+
 .categoria {
     margin-top: 60px;
     margin-bottom: 25px;

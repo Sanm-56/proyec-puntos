@@ -114,6 +114,37 @@ const galeriasSabores = [
     }
 ];
 
+// Agrega aqui las referencias agotadas para bloquear solo esa variante.
+const referenciasAgotadas = new Set([]);
+
+function referenciaAgotada(referencia) {
+    return referenciasAgotadas.has(referencia);
+}
+
+function aplicarDisponibilidadSeleccionada(producto, referencia) {
+    const estado = producto.querySelector(".estado");
+    const botonAgregar = producto.querySelector(".agregar-carrito");
+    const enlacePedido = producto.querySelector("a.boton");
+    const agotado = referenciaAgotada(referencia);
+
+    if (estado) {
+        estado.classList.toggle("agotado", agotado);
+        estado.classList.toggle("disponible", !agotado);
+        estado.textContent = agotado ? "Agotado" : "Disponible";
+    }
+
+    if (botonAgregar) {
+        botonAgregar.disabled = agotado;
+        botonAgregar.textContent = agotado ? "Agotado" : "Agregar";
+    }
+
+    if (enlacePedido) {
+        enlacePedido.classList.toggle("boton-agotado", agotado);
+        enlacePedido.setAttribute("aria-disabled", String(agotado));
+        enlacePedido.style.pointerEvents = agotado ? "none" : "";
+    }
+}
+
 function configurarGaleriasSabores() {
     const galeriasPorProducto = new Map();
 
@@ -152,6 +183,7 @@ function configurarGaleriasSabores() {
             opcion.type = "button";
             opcion.className = "sabor-opcion";
             opcion.setAttribute("aria-label", `Ver sabor ${nombre}`);
+            opcion.classList.toggle("sabor-agotado", referenciaAgotada(referencia));
             miniatura.src = imagen;
             miniatura.alt = nombre;
             etiqueta.textContent = nombre;
@@ -169,6 +201,7 @@ function configurarGaleriasSabores() {
                 if (descripcion) {
                     descripcion.textContent = descripcion.textContent.replace(/-[^-.\s]+\.?$/, `-${nombre.toUpperCase()}.`);
                 }
+                aplicarDisponibilidadSeleccionada(producto, referencia);
                 producto.classList.remove("galeria-fijada");
                 botonGaleria.setAttribute("aria-expanded", "false");
             });
@@ -412,35 +445,11 @@ function enviarPedido() {
     );
 }
 
-// ================= DISPONIBILIDAD =================
-function cargarDisponibilidad() {
-    document.querySelectorAll(".producto").forEach(producto => {
-        const estado = producto.querySelector(".estado");
-        const botonAgregar = producto.querySelector(".agregar-carrito");
-        const enlacePedido = producto.querySelector("a.boton");
-        const agotado = estado && estado.classList.contains("agotado");
-
-        if (!agotado) return;
-
-        estado.textContent = "Agotado";
-        if (botonAgregar) {
-            botonAgregar.disabled = true;
-            botonAgregar.textContent = "Agotado";
-        }
-        if (enlacePedido) {
-            enlacePedido.classList.add("boton-agotado");
-            enlacePedido.setAttribute("aria-disabled", "true");
-            enlacePedido.removeAttribute("href");
-        }
-    });
-}
-
 // ================= NAVEGACION Y ANIMACIONES =================
 document.addEventListener("DOMContentLoaded", () => {
     configurarPrecios();
     configurarExpansores();
     configurarGaleriasSabores();
-    cargarDisponibilidad();
 
     document.querySelectorAll('a[target="_blank"]').forEach(enlace => {
         enlace.setAttribute("rel", "noopener noreferrer");
