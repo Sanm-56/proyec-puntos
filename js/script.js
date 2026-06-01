@@ -121,6 +121,16 @@ const galeriasSabores = [
             ["Chocolate", "img/galletas/POKICHOCO.jpeg", "pokichocolate"],
             ["Vainilla black", "img/galletas/POKIBLACK.jpeg", "pokivainillablack"]
         ]
+    },
+    {
+        productos: ["rulitasslimon"],
+        sabores: [
+            ["Limon", "img/paquetes/MINILIMON.jpeg", "rulitasslimon"],
+            ["BBQ", "img/paquetes/MINIBBQ.jpeg", "rulitassbbq"],
+            ["Hot chilli", "img/paquetes/MINIHOTCHILLI.png", "rulitasshotchilli"],
+            ["Mayonesa", "img/paquetes/MINIMAYO.jpeg", "rulitassmayonesa"],
+            ["Pollo", "img/paquetes/MINIPOLLO.png", "rulitasspollo"]
+        ]
     }
 ];
 
@@ -228,6 +238,7 @@ function configurarGaleriasSabores() {
         botonGaleria.addEventListener("click", alternarGaleria);
         producto.prepend(botonGaleria);
         producto.appendChild(panel);
+        aplicarDisponibilidadSeleccionada(producto, botonAgregar.dataset.nombre.trim());
     });
 
     document.addEventListener("click", event => {
@@ -249,11 +260,13 @@ function obtenerCatalogo() {
     });
 
     galeriasSabores.forEach(galeria => {
-        const botonBase = document.querySelector(`[data-nombre="${galeria.productos[0]}"]`);
-        if (!botonBase) return;
+        const precioFamilia = galeria.sabores
+            .map(([, , referencia]) => catalogo.get(referencia))
+            .find(precio => Number.isFinite(precio));
+        if (!Number.isFinite(precioFamilia)) return;
 
         galeria.sabores.forEach(([, , referencia]) => {
-            catalogo.set(referencia, Number(botonBase.dataset.precio));
+            catalogo.set(referencia, precioFamilia);
         });
     });
 
