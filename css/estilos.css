@@ -904,7 +904,7 @@ footer {
 
 .selector-clientes button:last-child {
   background-color: #25D366;
-  color: white;
+  color: rgb(255, 255, 255);
 }
 
 .selector-clientes button:hover {
