@@ -42,12 +42,15 @@
               <div class="auth-actions" aria-live="polite">
                 <span id="authUserLabel" class="auth-user-label" hidden></span>
                 <button id="btnAbrirAuth" class="auth-trigger" type="button">Ingresar</button>
+                <button id="btnAbrirCuenta" class="auth-trigger" type="button" hidden>Mi cuenta</button>
                 <button id="btnCerrarSesion" class="auth-trigger auth-logout" type="button" hidden>Cerrar sesión</button>
               </div>
      </div>
 </header>
 <div id="authModal" class="auth-modal" hidden aria-hidden="true"><div class="auth-dialog" role="dialog" aria-modal="true" aria-labelledby="authModalTitle"><button id="btnCerrarAuth" class="auth-close" type="button" aria-label="Cerrar">×</button><h2 id="authModalTitle">Ingresar</h2><p id="authMessage" class="auth-message" role="status" aria-live="polite"></p><form id="loginForm" class="auth-form" novalidate><label for="loginEmail">Correo electrónico</label><input id="loginEmail" name="email" type="email" autocomplete="email" required><label for="loginPassword">Contraseña</label><input id="loginPassword" name="password" type="password" autocomplete="current-password" required><button class="boton" type="submit">Ingresar</button><p>¿No tienes cuenta? <button id="mostrarRegistro" class="auth-link" type="button">Regístrate</button></p></form><form id="registerForm" class="auth-form" hidden novalidate><label for="registerName">Nombre completo</label><input id="registerName" name="fullName" type="text" autocomplete="name" required><label for="registerEmail">Correo electrónico</label><input id="registerEmail" name="email" type="email" autocomplete="email" required><label for="registerPhone">Teléfono</label><input id="registerPhone" name="phone" type="tel" autocomplete="tel" required><label for="registerPassword">Contraseña</label><input id="registerPassword" name="password" type="password" autocomplete="new-password" minlength="6" required><label for="registerPasswordConfirm">Confirmar contraseña</label><input id="registerPasswordConfirm" name="passwordConfirm" type="password" autocomplete="new-password" minlength="6" required><button class="boton" type="submit">Crear cuenta</button><p>¿Ya tienes cuenta? <button id="mostrarLogin" class="auth-link" type="button">Ingresa</button></p></form></div></div>
 
+
+<div id="accountModal" class="auth-modal" hidden aria-hidden="true"><div class="auth-dialog account-dialog" role="dialog" aria-modal="true" aria-labelledby="accountModalTitle"><button id="btnCerrarCuenta" class="auth-close" type="button" aria-label="Cerrar cuenta">×</button><h2 id="accountModalTitle">Mi cuenta</h2><p id="accountMessage" class="auth-message" role="status" aria-live="polite">Cargando cuenta...</p><div id="accountContent" hidden><dl class="account-details"><div><dt>Correo electrónico</dt><dd id="accountEmail"></dd></div><div><dt>Cuenta creada</dt><dd id="accountCreatedAt"></dd></div><div><dt>Tipo de cuenta</dt><dd id="accountRole">Usuario</dd></div></dl><form id="accountForm" class="auth-form" novalidate><label for="accountFullName">Nombre completo</label><input id="accountFullName" name="fullName" type="text" autocomplete="name" maxlength="120" required><label for="accountPhone">Teléfono</label><input id="accountPhone" name="phone" type="tel" autocomplete="tel" maxlength="40" required><p class="account-readonly">El correo se administra desde Supabase Auth y no se puede cambiar aquí.</p><button class="boton" type="submit">Guardar cambios</button></form><button id="btnCerrarSesionCuenta" class="auth-link account-signout" type="button">Cerrar sesión</button></div></div></div>
 
 <!-- ================= HERO ================= -->
 <section class="hero" id="inicio">
@@ -1281,6 +1284,7 @@
 <script src="js/config/supabase-config.js"></script>
 <script src="js/services/supabase.js"></script>
 <script src="js/auth/auth.js"></script>
+<script src="js/account/account.js"></script>
 <script src="js/core/format.js"></script>
 <script src="js/whatsapp/whatsapp.js"></script>
 <script src="js/products/variants.js"></script>
