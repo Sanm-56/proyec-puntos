@@ -1,5 +1,6 @@
 (function (namespace) {
     const pendingKey = "goTiendaPendingCheckout";
+    const historyPageSize = 20;
     const byId = id => document.getElementById(id);
 
     function setStatus(message, isError = false) {
@@ -19,6 +20,40 @@
 
     function getClient() {
         return namespace.supabase && namespace.supabase.client;
+    }
+
+    function statusLabel(status) {
+        const labels = {
+            pending: "Pendiente",
+            confirmed: "Confirmado",
+            preparing: "En preparación",
+            completed: "Completado",
+            cancelled: "Cancelado"
+        };
+        return labels[status] || "Estado no disponible";
+    }
+
+    async function getMyOrders(offset = 0, limit = historyPageSize) {
+        if (!getClient()) throw new Error("ORDERS_UNAVAILABLE");
+        const safeOffset = Number.isInteger(offset) && offset >= 0 ? offset : 0;
+        const safeLimit = Number.isInteger(limit) && limit > 0 && limit <= historyPageSize ? limit : historyPageSize;
+        const result = await getClient().from("orders")
+            .select("id, order_number, created_at, status, subtotal, total")
+            .order("created_at", { ascending: false })
+            .range(safeOffset, safeOffset + safeLimit);
+        if (result.error) throw result.error;
+        const rows = Array.isArray(result.data) ? result.data : [];
+        return { orders: rows.slice(0, safeLimit), hasMore: rows.length > safeLimit };
+    }
+
+    async function getOrderDetails(orderId) {
+        if (!getClient() || typeof orderId !== "string" || !orderId) throw new Error("ORDER_DETAILS_UNAVAILABLE");
+        const result = await getClient().from("order_items")
+            .select("product_name, product_reference, product_code, quantity, unit_price, line_total")
+            .eq("order_id", orderId)
+            .order("created_at", { ascending: true });
+        if (result.error) throw result.error;
+        return Array.isArray(result.data) ? result.data : [];
     }
 
     function cartFingerprint(items) {
@@ -169,5 +204,5 @@
         return order;
     }
 
-    namespace.orders = Object.freeze({ checkout, buildItems, errorMessage });
+    namespace.orders = Object.freeze({ checkout, buildItems, errorMessage, getMyOrders, getOrderDetails, statusLabel, historyPageSize });
 }(window.GoTienda = window.GoTienda || {}));
