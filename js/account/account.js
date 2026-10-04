@@ -209,9 +209,7 @@
                 return;
             }
             state.profile = profileResult.data;
-            const roleResult = await client().from("user_roles").select("role").eq("user_id", userId).maybeSingle();
-            if (!state.user || state.user.id !== userId) return;
-            state.role = !roleResult.error && roleResult.data && roleResult.data.role === "admin" ? "admin" : "user";
+            state.role = namespace.adminAuth && namespace.adminAuth.isAdmin() ? "admin" : "user";
             renderAccount();
             message("Cuenta lista.");
         } catch (_) {
@@ -289,6 +287,10 @@
         byId("accountModal").addEventListener("click", event => { if (event.target === event.currentTarget) closeAccount(); });
         document.addEventListener("keydown", event => { if (event.key === "Escape" && !byId("accountModal").hidden) closeAccount(); });
         bindTabs();
+        if (namespace.adminAuth && namespace.adminAuth.subscribe) namespace.adminAuth.subscribe(adminState => {
+            state.role = adminState.isAdmin ? "admin" : "user";
+            if (state.user && state.profile) renderAccount();
+        });
         if (namespace.auth && namespace.auth.getUser) namespace.auth.getUser().then(result => handleAuthState(result && result.data && result.data.user));
     }
 

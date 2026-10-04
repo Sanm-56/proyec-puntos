@@ -43,6 +43,7 @@
                 <span id="authUserLabel" class="auth-user-label" hidden></span>
                 <button id="btnAbrirAuth" class="auth-trigger" type="button">Ingresar</button>
                 <button id="btnAbrirCuenta" class="auth-trigger" type="button" hidden>Mi cuenta</button>
+                <button id="btnAbrirAdmin" class="auth-trigger auth-admin-trigger" type="button" hidden>Administración</button>
                 <button id="btnCerrarSesion" class="auth-trigger auth-logout" type="button" hidden>Cerrar sesión</button>
               </div>
      </div>
@@ -51,6 +52,7 @@
 
 
 <div id="accountModal" class="auth-modal" hidden aria-hidden="true"><div class="auth-dialog account-dialog" role="dialog" aria-modal="true" aria-labelledby="accountModalTitle"><button id="btnCerrarCuenta" class="auth-close" type="button" aria-label="Cerrar cuenta">×</button><h2 id="accountModalTitle">Mi cuenta</h2><p id="accountMessage" class="auth-message" role="status" aria-live="polite">Cargando cuenta...</p><div id="accountContent" hidden><div class="account-tabs" role="tablist" aria-label="Secciones de mi cuenta"><button id="accountTabProfile" class="account-tab" type="button" role="tab" aria-selected="true" aria-controls="accountProfilePanel">Perfil</button><button id="accountTabOrders" class="account-tab" type="button" role="tab" aria-selected="false" aria-controls="accountOrdersPanel" tabindex="-1">Mis pedidos</button></div><section id="accountProfilePanel" role="tabpanel" aria-labelledby="accountTabProfile"><dl class="account-details"><div><dt>Correo electrónico</dt><dd id="accountEmail"></dd></div><div><dt>Cuenta creada</dt><dd id="accountCreatedAt"></dd></div><div><dt>Tipo de cuenta</dt><dd id="accountRole">Usuario</dd></div></dl><form id="accountForm" class="auth-form" novalidate><label for="accountFullName">Nombre completo</label><input id="accountFullName" name="fullName" type="text" autocomplete="name" maxlength="120" required><label for="accountPhone">Teléfono</label><input id="accountPhone" name="phone" type="tel" autocomplete="tel" maxlength="40" required><p class="account-readonly">El correo se administra desde Supabase Auth y no se puede cambiar aquí.</p><button class="boton" type="submit">Guardar cambios</button></form><button id="btnCerrarSesionCuenta" class="auth-link account-signout" type="button">Cerrar sesión</button></section><section id="accountOrdersPanel" class="account-orders-panel" role="tabpanel" aria-labelledby="accountTabOrders" hidden><p id="orderHistoryMessage" class="account-history-message" role="status" aria-live="polite"></p><div id="orderHistoryList" class="order-history-list"></div><button id="btnVerMasPedidos" class="auth-link account-load-more" type="button" hidden>Ver más</button></section></div></div></div>
+<div id="adminModal" class="auth-modal" hidden aria-hidden="true"><div class="auth-dialog admin-dialog" role="dialog" aria-modal="true" aria-labelledby="adminModalTitle"><button id="btnCerrarAdmin" class="auth-close" type="button" aria-label="Cerrar administración">×</button><h2 id="adminModalTitle">Panel de administración</h2><p id="adminMessage" class="auth-message" role="status" aria-live="polite"></p><div id="adminShellContent" hidden><p>Las herramientas administrativas estarán disponibles en la siguiente fase.</p></div></div></div>
 
 <!-- ================= HERO ================= -->
 <section class="hero" id="inicio">
@@ -1295,6 +1297,7 @@
 <script src="js/config/supabase-config.js"></script>
 <script src="js/services/supabase.js"></script>
 <script src="js/auth/auth.js"></script>
+<script src="js/admin/admin-auth.js"></script>
 <script src="js/account/account.js"></script>
 <script src="js/core/format.js"></script>
 <script src="js/whatsapp/whatsapp.js"></script>
