@@ -26,7 +26,7 @@
             const code = clean(button.dataset.codigo), reference = clean(button.dataset.nombre);
             if (!CATEGORY_PREFIXES[category]) report(`Categoría no soportada para "${reference}".`);
             else if (code && !code.startsWith(`${CATEGORY_PREFIXES[category]}-`)) report(`El código "${code}" no coincide con la categoría "${category}".`);
-            add({ code, reference, category, name: clean(product && product.querySelector("h3") && product.querySelector("h3").textContent) || reference, price: Number(button.dataset.precio), available: !button.disabled });
+            add({ code, reference, category, name: clean(product && product.querySelector("h3, h4") && product.querySelector("h3, h4").textContent) || reference, price: Number(button.dataset.precio), available: !button.disabled });
         });
         (namespace.products.variantGalleries || []).forEach(gallery => {
             const family = gallery.products.map(reference => byReference.get(reference)).find(Boolean);

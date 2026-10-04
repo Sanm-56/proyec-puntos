@@ -11,6 +11,7 @@
         { products: ["galleblanc77"], flavors: [["Blanco", "img/galletas/galleblanc77.jpeg", "galleblanc77", "GAL-001"], ["Negro", "img/galletas/galleneg77.jpeg", "galleneg77", "GAL-007"], ["Fresa", "img/galletas/galletafresa77.jpg", "galletafresa77", "GAL-008"]] },
         { products: ["gallepoki"], flavors: [["Vainilla", "img/galletas/POKIVAI.jpeg", "pokivainilla", "GAL-009"], ["Fresa", "img/galletas/POKIFRESA.jpeg", "pokifresa", "GAL-010"], ["Limon", "img/galletas/POKILIM.jpeg", "pokilimon", "GAL-011"], ["Chocolate", "img/galletas/POKICHOCO.jpeg", "pokichocolate", "GAL-012"], ["Vainilla black", "img/galletas/POKIBLACK.jpeg", "pokivainillablack", "GAL-013"]] }
     ];
+    const variantSelections = new Map();
     const outOfStockReferences = new Set([]);
     const isOutOfStock = reference => outOfStockReferences.has(reference);
 
@@ -47,17 +48,22 @@
             product.classList.add("producto-con-sabores");
             galleryButton.type = "button"; galleryButton.className = "boton-sabores"; galleryButton.setAttribute("aria-controls", panelId); galleryButton.setAttribute("aria-expanded", "false"); galleryButton.setAttribute("aria-label", "Ver sabores disponibles"); galleryButton.textContent = "+";
             panel.id = panelId; panel.className = "galeria-sabores"; panel.setAttribute("aria-label", "Sabores disponibles");
-            flavors.forEach(([name, image, reference, code]) => {
+            const selectFlavor = ([name, image, reference, code]) => {
+                mainImage.src = image; mainImage.alt = `Producto sabor ${name}`; addButton.dataset.nombre = reference; addButton.dataset.codigo = code;
+                if (orderLink) orderLink.href = namespace.whatsapp.createWhatsappUrl(`Hola, quiero informacion sobre ${reference}.`);
+                const description = product.querySelector("p:not(.precio)");
+                if (description) description.textContent = description.textContent.replace(/-[^-.\s]+\.?$/, `-${name.toUpperCase()}.`);
+                applySelectedAvailability(product, reference); product.classList.remove("galeria-fijada"); galleryButton.setAttribute("aria-expanded", "false");
+            };
+            flavors.forEach(flavor => {
+                const [name, image, reference] = flavor;
                 const option = document.createElement("button"); const thumbnail = document.createElement("img"); const label = document.createElement("span");
                 option.type = "button"; option.className = "sabor-opcion"; option.setAttribute("aria-label", `Ver sabor ${name}`); option.classList.toggle("sabor-agotado", isOutOfStock(reference));
                 thumbnail.src = image; thumbnail.alt = name; label.textContent = name; option.append(thumbnail, label);
                 option.addEventListener("click", event => {
-                    event.stopPropagation(); mainImage.src = image; mainImage.alt = `Producto sabor ${name}`; addButton.dataset.nombre = reference; addButton.dataset.codigo = code;
-                    if (orderLink) orderLink.href = namespace.whatsapp.createWhatsappUrl(`Hola, quiero informacion sobre ${reference}.`);
-                    const description = product.querySelector("p:not(.precio)");
-                    if (description) description.textContent = description.textContent.replace(/-[^-.\s]+\.?$/, `-${name.toUpperCase()}.`);
-                    applySelectedAvailability(product, reference); product.classList.remove("galeria-fijada"); galleryButton.setAttribute("aria-expanded", "false");
+                    event.stopPropagation(); selectFlavor(flavor);
                 });
+                variantSelections.set(reference, { product, select: () => selectFlavor(flavor) });
                 panel.appendChild(option);
             });
             galleryButton.addEventListener("click", event => { event.stopPropagation(); const isOpen = product.classList.toggle("galeria-fijada"); galleryButton.setAttribute("aria-expanded", String(isOpen)); });
@@ -69,5 +75,6 @@
         }));
     }
     function resolveVariant(reference) { for (const gallery of variantGalleries) { for (const [, , variantReference, code] of gallery.flavors) { if (variantReference === reference) { const entry = namespace.products.getByReference && namespace.products.getByReference(reference); return { code, reference, price: entry && entry.price, availability: !isOutOfStock(reference) }; } } } return null; }
-    namespace.products = { variantGalleries, configurePrices, configureFlavorGalleries, resolveVariant };
+    function selectVariant(reference) { const selection = variantSelections.get(reference); if (!selection) return null; selection.select(); return selection.product; }
+    namespace.products = { variantGalleries, configurePrices, configureFlavorGalleries, resolveVariant, selectVariant };
 }(window.GoTienda = window.GoTienda || {}));

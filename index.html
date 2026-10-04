@@ -81,6 +81,15 @@
      <section id="productos" class="seccion">
          <div class="contenedor">
         <h2>Nuestros Productos</h2>
+        <div class="product-search" role="search">
+            <label class="sr-only" for="productSearchInput">Buscar productos</label>
+            <div class="product-search-controls">
+                <input id="productSearchInput" type="search" placeholder="Buscar por código, producto o referencia..." autocomplete="off" aria-controls="productSearchResults" aria-expanded="false">
+                <button id="clearProductSearch" type="button" class="product-search-clear" aria-label="Limpiar búsqueda" hidden>Limpiar</button>
+            </div>
+            <p id="productSearchStatus" class="sr-only" role="status" aria-live="polite"></p>
+            <div id="productSearchResults" class="product-search-results" role="listbox" aria-label="Resultados de búsqueda" hidden></div>
+        </div>
         <div class="categoria-nav">
             <a href="#bebidas">Bebidas</a>
             <a href="#pasabocas">Pasabocas</a>
@@ -1289,6 +1298,7 @@
 <script src="js/whatsapp/whatsapp.js"></script>
 <script src="js/products/variants.js"></script>
 <script src="js/products/catalog.js"></script>
+<script src="js/products/search.js"></script>
 <script src="js/cart/cart.js"></script>
 <script src="js/script.js"></script>
 </body>
