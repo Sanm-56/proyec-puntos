@@ -516,6 +516,24 @@ footer {
     margin-top: 15px;
 }
 
+.checkout-status {
+    line-height: 1.35;
+    margin: 12px 0 0;
+}
+
+.checkout-status-error {
+    color: #b91c1c;
+}
+
+.checkout-whatsapp-fallback {
+    display: inline-block;
+    margin-top: 10px;
+}
+
+[hidden] {
+    display: none !important;
+}
+
 .puntos-panel {
     background: #f0fdf4;
     border: 1px solid #bbf7d0;

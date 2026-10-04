@@ -35,7 +35,22 @@
         function remove(index) { cart.splice(index, 1); render(); }
         function decrement(index) { if (cart[index].cantidad > 1) cart[index].cantidad -= 1; else cart.splice(index, 1); render(); }
         function empty() { cart = []; render(); }
-        function checkout() { if (cart.length === 0) { alert("El carrito esta vacio"); return; } const message = namespace.whatsapp.buildCheckoutMessage(cart, latestPointsSummary); empty(); window.open(namespace.whatsapp.createWhatsappUrl(message), "_blank", "noopener,noreferrer"); }
+        function clearPersistedSnapshot(snapshot) {
+            const current = JSON.stringify(cart);
+            const persisted = JSON.stringify(snapshot);
+            if (current === persisted) empty();
+        }
+        function checkout() {
+            if (!namespace.orders) {
+                const status = document.getElementById("checkoutStatus");
+                if (status) {
+                    status.textContent = "El servicio de pedidos no está disponible en este momento.";
+                    status.classList.add("checkout-status-error");
+                }
+                return;
+            }
+            return namespace.orders.checkout(cart.map(product => ({ ...product })), clearPersistedSnapshot);
+        }
         return { add, checkout, empty, render };
     }
     namespace.cart = { createCartController };
