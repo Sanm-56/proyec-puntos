@@ -2,7 +2,7 @@
     const pageSize = 20;
     const byId = id => document.getElementById(id);
     const emptyCollection = () => ({ rows: [], hasMore: false, loading: false });
-    const state = { loading: false, loaded: false, activeTab: "summary", summary: {}, orders: emptyCollection(), users: emptyCollection(), details: new Map() };
+    const state = { loading: false, loaded: false, activeTab: "summary", summary: {}, orders: emptyCollection(), users: emptyCollection(), details: new Map(), mutatingOrders: new Set() };
     const client = () => namespace.supabase && namespace.supabase.isAvailable() ? namespace.supabase.client : null;
     const isAdmin = () => Boolean(namespace.adminAuth && namespace.adminAuth.isAdmin && namespace.adminAuth.isAdmin());
     const formatPrice = value => namespace.formatPrice(Number(value));
@@ -23,6 +23,7 @@
         state.orders = emptyCollection();
         state.users = emptyCollection();
         state.details = new Map();
+        state.mutatingOrders = new Set();
         ["adminSummaryCards", "adminSummaryBreakdown", "adminOrdersList", "adminUsersList"].forEach(id => {
             const node = byId(id);
             if (node) node.replaceChildren();
@@ -234,6 +235,50 @@
         }
     }
 
+    async function changeOrderStatus(order, nextStatus, actions) {
+        if (!namespace.orderManagement || state.mutatingOrders.has(order.order_number)) return;
+        const transition = namespace.orderManagement.getAllowedTransitions(order.status).find(item => item.status === nextStatus);
+        if (!transition) return;
+        if (transition.destructive && !window.confirm("¿Seguro que deseas cancelar el pedido " + order.order_number + "? Esta acción no se puede deshacer.")) return;
+        state.mutatingOrders.add(order.order_number);
+        actions.querySelectorAll("button").forEach(button => { button.disabled = true; });
+        setStatus("Actualizando el pedido " + order.order_number + "...");
+        try {
+            const result = await namespace.orderManagement.updateStatus(order.order_number, nextStatus);
+            order.status = result.new_status;
+            order.updated_at = result.updated_at;
+            state.details.delete(order.id);
+            await refresh();
+            setStatus(result.changed ? "Pedido " + result.order_number + " actualizado a " + statusLabel(result.new_status) + "." : "El pedido ya tenía ese estado.");
+        } catch (error) {
+            setStatus(namespace.orderManagement.errorMessage(error), true);
+        } finally {
+            state.mutatingOrders.delete(order.order_number);
+            if (!state.loading) actions.querySelectorAll("button").forEach(button => { button.disabled = false; });
+        }
+    }
+
+    function renderOrderActions(order) {
+        const actions = document.createElement("div");
+        actions.className = "admin-order-actions";
+        const transitions = namespace.orderManagement ? namespace.orderManagement.getAllowedTransitions(order.status) : [];
+        if (!transitions.length) {
+            addText(actions, "p", "Estado final: no admite más cambios.", "admin-order-terminal");
+            return actions;
+        }
+        addText(actions, "p", "Cambiar estado:", "admin-order-actions-label");
+        transitions.forEach(transition => {
+            const button = document.createElement("button");
+            button.type = "button";
+            button.className = "auth-link admin-status-action" + (transition.destructive ? " admin-status-cancel" : "");
+            button.textContent = transition.label;
+            button.setAttribute("aria-label", transition.label + " pedido " + order.order_number);
+            button.addEventListener("click", () => changeOrderStatus(order, transition.status, actions));
+            actions.appendChild(button);
+        });
+        return actions;
+    }
+
     function renderOrders() {
         const list = byId("adminOrdersList");
         const more = byId("btnVerMasAdminPedidos");
@@ -250,6 +295,7 @@
                 addText(card, "p", formatDate(order.created_at));
                 addText(card, "p", "Estado: " + statusLabel(order.status));
                 addText(card, "p", "Total: " + formatPrice(order.total), "admin-record-total");
+                card.appendChild(renderOrderActions(order));
                 const button = document.createElement("button");
                 const details = document.createElement("div");
                 button.type = "button";
