@@ -1,0 +1,983 @@
+[
+  {
+    "code": "BEB-001",
+    "reference": "gaseosa250ml",
+    "display_name": "250mlx24uni",
+    "category": "bebidas",
+    "unit_price": 20800,
+    "active": true,
+    "available": true
+  },
+  {
+    "code": "BEB-002",
+    "reference": "gaseosa400ml",
+    "display_name": "400mlx24uni",
+    "category": "bebidas",
+    "unit_price": 25800,
+    "active": true,
+    "available": true
+  },
+  {
+    "code": "BEB-003",
+    "reference": "gaseosa1l",
+    "display_name": "1lx12uni",
+    "category": "bebidas",
+    "unit_price": 24000,
+    "active": true,
+    "available": true
+  },
+  {
+    "code": "BEB-004",
+    "reference": "gaseosa1.7l",
+    "display_name": "1.7L x 6uni",
+    "category": "bebidas",
+    "unit_price": 18500,
+    "active": true,
+    "available": true
+  },
+  {
+    "code": "BEB-005",
+    "reference": "jugos250ml",
+    "display_name": "250mlx24uni",
+    "category": "bebidas",
+    "unit_price": 10500,
+    "active": true,
+    "available": true
+  },
+  {
+    "code": "BEB-006",
+    "reference": "jugos400ml",
+    "display_name": "400mlx24uni",
+    "category": "bebidas",
+    "unit_price": 13000,
+    "active": true,
+    "available": true
+  },
+  {
+    "code": "BEB-007",
+    "reference": "jugos1.7l",
+    "display_name": "1.7L x 6uni",
+    "category": "bebidas",
+    "unit_price": 18500,
+    "active": true,
+    "available": true
+  },
+  {
+    "code": "BEB-008",
+    "reference": "jugos200ml",
+    "display_name": "200mlx24uni",
+    "category": "bebidas",
+    "unit_price": 19500,
+    "active": true,
+    "available": true
+  },
+  {
+    "code": "BEB-009",
+    "reference": "aguanatur600ml",
+    "display_name": "600ml x 20uni",
+    "category": "bebidas",
+    "unit_price": 16500,
+    "active": true,
+    "available": true
+  },
+  {
+    "code": "DUL-001",
+    "reference": "minichicle",
+    "display_name": "tarrox150uni",
+    "category": "dulceria",
+    "unit_price": 25000,
+    "active": true,
+    "available": true
+  },
+  {
+    "code": "DUL-002",
+    "reference": "chicledragon",
+    "display_name": "tarrox100uni",
+    "category": "dulceria",
+    "unit_price": 29000,
+    "active": true,
+    "available": true
+  },
+  {
+    "code": "DUL-003",
+    "reference": "bolanis",
+    "display_name": "tarrox100uni",
+    "category": "dulceria",
+    "unit_price": 8000,
+    "active": true,
+    "available": true
+  },
+  {
+    "code": "DUL-004",
+    "reference": "superhiperaci",
+    "display_name": "cajax80uni",
+    "category": "dulceria",
+    "unit_price": 11500,
+    "active": true,
+    "available": true
+  },
+  {
+    "code": "DUL-005",
+    "reference": "molotov",
+    "display_name": "bolsax100uni",
+    "category": "dulceria",
+    "unit_price": 11500,
+    "active": true,
+    "available": true
+  },
+  {
+    "code": "DUL-006",
+    "reference": "mallapolvo",
+    "display_name": "bolsax15uni",
+    "category": "dulceria",
+    "unit_price": 7200,
+    "active": true,
+    "available": true
+  },
+  {
+    "code": "DUL-007",
+    "reference": "pintaleng",
+    "display_name": "bolsax30uni",
+    "category": "dulceria",
+    "unit_price": 8200,
+    "active": true,
+    "available": true
+  },
+  {
+    "code": "DUL-008",
+    "reference": "vasoare",
+    "display_name": "cajax12uni",
+    "category": "dulceria",
+    "unit_price": 8600,
+    "active": true,
+    "available": true
+  },
+  {
+    "code": "DUL-009",
+    "reference": "chuleche",
+    "display_name": "bolsax50uni",
+    "category": "dulceria",
+    "unit_price": 7500,
+    "active": true,
+    "available": true
+  },
+  {
+    "code": "DUL-010",
+    "reference": "chucora",
+    "display_name": "bolsax50uni",
+    "category": "dulceria",
+    "unit_price": 7500,
+    "active": true,
+    "available": true
+  },
+  {
+    "code": "DUL-011",
+    "reference": "mora",
+    "display_name": "tarrox100uni",
+    "category": "dulceria",
+    "unit_price": 8000,
+    "active": true,
+    "available": true
+  },
+  {
+    "code": "DUL-012",
+    "reference": "pitisor",
+    "display_name": "bolsax24uni",
+    "category": "dulceria",
+    "unit_price": 8000,
+    "active": true,
+    "available": true
+  },
+  {
+    "code": "DUL-013",
+    "reference": "truehue",
+    "display_name": "cajaX24uni",
+    "category": "dulceria",
+    "unit_price": 24000,
+    "active": true,
+    "available": true
+  },
+  {
+    "code": "DUL-014",
+    "reference": "trueleta",
+    "display_name": "cajaX24uni",
+    "category": "dulceria",
+    "unit_price": 15000,
+    "active": true,
+    "available": true
+  },
+  {
+    "code": "DUL-015",
+    "reference": "truepop",
+    "display_name": "cajax50uni",
+    "category": "dulceria",
+    "unit_price": 12500,
+    "active": true,
+    "available": true
+  },
+  {
+    "code": "DUL-016",
+    "reference": "truepopsod",
+    "display_name": "bolsax60uni",
+    "category": "dulceria",
+    "unit_price": 15000,
+    "active": true,
+    "available": true
+  },
+  {
+    "code": "DUL-017",
+    "reference": "palitaci",
+    "display_name": "tarrox90uni",
+    "category": "dulceria",
+    "unit_price": 8000,
+    "active": true,
+    "available": true
+  },
+  {
+    "code": "DUL-018",
+    "reference": "bolalmen",
+    "display_name": "tarrox100uni",
+    "category": "dulceria",
+    "unit_price": 8000,
+    "active": true,
+    "available": true
+  },
+  {
+    "code": "DUL-019",
+    "reference": "paneleche",
+    "display_name": "tarrox50uni",
+    "category": "dulceria",
+    "unit_price": 8000,
+    "active": true,
+    "available": true
+  },
+  {
+    "code": "DUL-020",
+    "reference": "panecoco",
+    "display_name": "tarrox50uni",
+    "category": "dulceria",
+    "unit_price": 8000,
+    "active": true,
+    "available": true
+  },
+  {
+    "code": "DUL-021",
+    "reference": "gelaplay25",
+    "display_name": "bolsax25uni",
+    "category": "dulceria",
+    "unit_price": 8000,
+    "active": true,
+    "available": true
+  },
+  {
+    "code": "DUL-022",
+    "reference": "chuponluz",
+    "display_name": "cajaX24uni",
+    "category": "dulceria",
+    "unit_price": 26000,
+    "active": true,
+    "available": true
+  },
+  {
+    "code": "DUL-023",
+    "reference": "gelaplay90",
+    "display_name": "tarrox90uni",
+    "category": "dulceria",
+    "unit_price": 30500,
+    "active": true,
+    "available": true
+  },
+  {
+    "code": "DUL-024",
+    "reference": "bocavele",
+    "display_name": "bolsax36uni",
+    "category": "dulceria",
+    "unit_price": 16400,
+    "active": true,
+    "available": true
+  },
+  {
+    "code": "DUL-025",
+    "reference": "barrile",
+    "display_name": "bolsax40uni",
+    "category": "dulceria",
+    "unit_price": 11000,
+    "active": true,
+    "available": true
+  },
+  {
+    "code": "DUL-026",
+    "reference": "combi",
+    "display_name": "cajaX16uni",
+    "category": "dulceria",
+    "unit_price": 8000,
+    "active": true,
+    "available": true
+  },
+  {
+    "code": "DUL-027",
+    "reference": "menthel",
+    "display_name": "bolsax100uni",
+    "category": "dulceria",
+    "unit_price": 9800,
+    "active": true,
+    "available": true
+  },
+  {
+    "code": "DUL-028",
+    "reference": "chili",
+    "display_name": "bolsax30uni",
+    "category": "dulceria",
+    "unit_price": 8300,
+    "active": true,
+    "available": true
+  },
+  {
+    "code": "DUL-029",
+    "reference": "tumixsur",
+    "display_name": "cajax100uni",
+    "category": "dulceria",
+    "unit_price": 11400,
+    "active": true,
+    "available": true
+  },
+  {
+    "code": "DUL-030",
+    "reference": "labioroj",
+    "display_name": "bolsax40uni",
+    "category": "dulceria",
+    "unit_price": 16500,
+    "active": true,
+    "available": true
+  },
+  {
+    "code": "DUL-031",
+    "reference": "bolon",
+    "display_name": "tarrox30uni",
+    "category": "dulceria",
+    "unit_price": 12000,
+    "active": true,
+    "available": true
+  },
+  {
+    "code": "DUL-032",
+    "reference": "corcho",
+    "display_name": "tarrox80uni",
+    "category": "dulceria",
+    "unit_price": 12500,
+    "active": true,
+    "available": true
+  },
+  {
+    "code": "DUL-033",
+    "reference": "candycere",
+    "display_name": "cajax30uni",
+    "category": "dulceria",
+    "unit_price": 10000,
+    "active": true,
+    "available": true
+  },
+  {
+    "code": "DUL-034",
+    "reference": "chupon",
+    "display_name": "bolsa",
+    "category": "dulceria",
+    "unit_price": 11300,
+    "active": true,
+    "available": true
+  },
+  {
+    "code": "DUL-035",
+    "reference": "tamarin",
+    "display_name": "tarrox40uni",
+    "category": "dulceria",
+    "unit_price": 10000,
+    "active": true,
+    "available": true
+  },
+  {
+    "code": "DUL-036",
+    "reference": "bolamang",
+    "display_name": "tarrox100uni",
+    "category": "dulceria",
+    "unit_price": 8000,
+    "active": true,
+    "available": true
+  },
+  {
+    "code": "DUL-037",
+    "reference": "pinpopsur",
+    "display_name": "bolsax24uni",
+    "category": "dulceria",
+    "unit_price": 9800,
+    "active": true,
+    "available": true
+  },
+  {
+    "code": "DUL-038",
+    "reference": "gummyball",
+    "display_name": "tarrox120uni",
+    "category": "dulceria",
+    "unit_price": 19000,
+    "active": true,
+    "available": true
+  },
+  {
+    "code": "DUL-039",
+    "reference": "geladrinks",
+    "display_name": "bolsax20uni",
+    "category": "dulceria",
+    "unit_price": 19000,
+    "active": true,
+    "available": true
+  },
+  {
+    "code": "DUL-040",
+    "reference": "gelafluuup",
+    "display_name": "bolsax25uni",
+    "category": "dulceria",
+    "unit_price": 17000,
+    "active": true,
+    "available": true
+  },
+  {
+    "code": "DUL-041",
+    "reference": "anilluz",
+    "display_name": "cajaX24uni",
+    "category": "dulceria",
+    "unit_price": 26000,
+    "active": true,
+    "available": true
+  },
+  {
+    "code": "DUL-042",
+    "reference": "samgiasys",
+    "display_name": "tarro x 30uni",
+    "category": "dulceria",
+    "unit_price": 27000,
+    "active": true,
+    "available": true
+  },
+  {
+    "code": "DUL-043",
+    "reference": "gelasor",
+    "display_name": "tarro x 30uni",
+    "category": "dulceria",
+    "unit_price": 28000,
+    "active": true,
+    "available": true
+  },
+  {
+    "code": "DUL-044",
+    "reference": "chocoboom",
+    "display_name": "caja x 30uni",
+    "category": "dulceria",
+    "unit_price": 12000,
+    "active": true,
+    "available": true
+  },
+  {
+    "code": "DUL-045",
+    "reference": "superhot",
+    "display_name": "bolsa x 24uni",
+    "category": "dulceria",
+    "unit_price": 10000,
+    "active": true,
+    "available": true
+  },
+  {
+    "code": "DUL-046",
+    "reference": "carameloacidodinosaurio",
+    "display_name": "empaque 3g (1g x 3uni)",
+    "category": "dulceria",
+    "unit_price": 14000,
+    "active": true,
+    "available": true
+  },
+  {
+    "code": "DUL-047",
+    "reference": "candymanz",
+    "display_name": "cajax30uni - Manzana",
+    "category": "dulceria",
+    "unit_price": 10000,
+    "active": true,
+    "available": true
+  },
+  {
+    "code": "DUL-048",
+    "reference": "candymora",
+    "display_name": "cajax30uni - Mora",
+    "category": "dulceria",
+    "unit_price": 10000,
+    "active": true,
+    "available": true
+  },
+  {
+    "code": "GAL-001",
+    "reference": "galleblanc77",
+    "display_name": "cajaX24uni",
+    "category": "galletas",
+    "unit_price": 35500,
+    "active": true,
+    "available": true
+  },
+  {
+    "code": "GAL-002",
+    "reference": "gallecoco",
+    "display_name": "cajax50uni",
+    "category": "galletas",
+    "unit_price": 8500,
+    "active": true,
+    "available": true
+  },
+  {
+    "code": "GAL-003",
+    "reference": "galleriza",
+    "display_name": "cajax50uni",
+    "category": "galletas",
+    "unit_price": 9500,
+    "active": true,
+    "available": true
+  },
+  {
+    "code": "GAL-004",
+    "reference": "gallepoki",
+    "display_name": "bolsax12uni",
+    "category": "galletas",
+    "unit_price": 8000,
+    "active": true,
+    "available": true
+  },
+  {
+    "code": "GAL-005",
+    "reference": "herpos",
+    "display_name": "cajax26uni",
+    "category": "galletas",
+    "unit_price": 12000,
+    "active": true,
+    "available": true
+  },
+  {
+    "code": "GAL-006",
+    "reference": "gomaemoji",
+    "display_name": "caja x 45uni",
+    "category": "galletas",
+    "unit_price": 8000,
+    "active": true,
+    "available": true
+  },
+  {
+    "code": "GAL-007",
+    "reference": "galleneg77",
+    "display_name": "cajaX24uni - Negro",
+    "category": "galletas",
+    "unit_price": 35500,
+    "active": true,
+    "available": true
+  },
+  {
+    "code": "GAL-008",
+    "reference": "galletafresa77",
+    "display_name": "cajaX24uni - Fresa",
+    "category": "galletas",
+    "unit_price": 35500,
+    "active": true,
+    "available": true
+  },
+  {
+    "code": "GAL-009",
+    "reference": "pokivainilla",
+    "display_name": "bolsax12uni - Vainilla",
+    "category": "galletas",
+    "unit_price": 8000,
+    "active": true,
+    "available": true
+  },
+  {
+    "code": "GAL-010",
+    "reference": "pokifresa",
+    "display_name": "bolsax12uni - Fresa",
+    "category": "galletas",
+    "unit_price": 8000,
+    "active": true,
+    "available": true
+  },
+  {
+    "code": "GAL-011",
+    "reference": "pokilimon",
+    "display_name": "bolsax12uni - Limon",
+    "category": "galletas",
+    "unit_price": 8000,
+    "active": true,
+    "available": true
+  },
+  {
+    "code": "GAL-012",
+    "reference": "pokichocolate",
+    "display_name": "bolsax12uni - Chocolate",
+    "category": "galletas",
+    "unit_price": 8000,
+    "active": true,
+    "available": true
+  },
+  {
+    "code": "GAL-013",
+    "reference": "pokivainillablack",
+    "display_name": "bolsax12uni - Vainilla black",
+    "category": "galletas",
+    "unit_price": 8000,
+    "active": true,
+    "available": true
+  },
+  {
+    "code": "HOG-001",
+    "reference": "esponjacero",
+    "display_name": "paquetesx12uni",
+    "category": "hogar",
+    "unit_price": 22000,
+    "active": true,
+    "available": true
+  },
+  {
+    "code": "HOG-002",
+    "reference": "esponjamalla",
+    "display_name": "paquetesx12uni",
+    "category": "hogar",
+    "unit_price": 10500,
+    "active": true,
+    "available": true
+  },
+  {
+    "code": "HOG-003",
+    "reference": "esponjarcoiris",
+    "display_name": "paquetesx12uni",
+    "category": "hogar",
+    "unit_price": 10500,
+    "active": true,
+    "available": true
+  },
+  {
+    "code": "HOG-004",
+    "reference": "esponjoroplata",
+    "display_name": "paquetesx12uni",
+    "category": "hogar",
+    "unit_price": 10500,
+    "active": true,
+    "available": true
+  },
+  {
+    "code": "HOG-005",
+    "reference": "platohondo",
+    "display_name": "14cmx12uni",
+    "category": "hogar",
+    "unit_price": 14000,
+    "active": true,
+    "available": true
+  },
+  {
+    "code": "HOG-006",
+    "reference": "platoredomedio",
+    "display_name": "18CMx12uni",
+    "category": "hogar",
+    "unit_price": 16000,
+    "active": true,
+    "available": true
+  },
+  {
+    "code": "HOG-007",
+    "reference": "platoredopeque",
+    "display_name": "10cmx12uni",
+    "category": "hogar",
+    "unit_price": 8500,
+    "active": true,
+    "available": true
+  },
+  {
+    "code": "PAS-001",
+    "reference": "charronespic",
+    "display_name": "18gx10uni",
+    "category": "pasabocas",
+    "unit_price": 16500,
+    "active": true,
+    "available": true
+  },
+  {
+    "code": "PAS-002",
+    "reference": "nachopic",
+    "display_name": "25gx12uni",
+    "category": "pasabocas",
+    "unit_price": 12000,
+    "active": true,
+    "available": true
+  },
+  {
+    "code": "PAS-003",
+    "reference": "nachoque",
+    "display_name": "25gx12uni",
+    "category": "pasabocas",
+    "unit_price": 12000,
+    "active": true,
+    "available": true
+  },
+  {
+    "code": "PAS-004",
+    "reference": "bolique",
+    "display_name": "8gx24uni",
+    "category": "pasabocas",
+    "unit_price": 9500,
+    "active": true,
+    "available": true
+  },
+  {
+    "code": "PAS-005",
+    "reference": "toclim",
+    "display_name": "20gx12uni",
+    "category": "pasabocas",
+    "unit_price": 12000,
+    "active": true,
+    "available": true
+  },
+  {
+    "code": "PAS-006",
+    "reference": "troclim",
+    "display_name": "15gx12uni",
+    "category": "pasabocas",
+    "unit_price": 4500,
+    "active": true,
+    "available": true
+  },
+  {
+    "code": "PAS-007",
+    "reference": "gritsnat9",
+    "display_name": "9gx12uni",
+    "category": "pasabocas",
+    "unit_price": 4500,
+    "active": true,
+    "available": true
+  },
+  {
+    "code": "PAS-008",
+    "reference": "gristcara33",
+    "display_name": "33gx12uni",
+    "category": "pasabocas",
+    "unit_price": 10200,
+    "active": true,
+    "available": true
+  },
+  {
+    "code": "PAS-009",
+    "reference": "gritsque50",
+    "display_name": "50gx6uni",
+    "category": "pasabocas",
+    "unit_price": 7500,
+    "active": true,
+    "available": true
+  },
+  {
+    "code": "PAS-010",
+    "reference": "gritscara70",
+    "display_name": "70gx6uni",
+    "category": "pasabocas",
+    "unit_price": 9000,
+    "active": true,
+    "available": true
+  },
+  {
+    "code": "PAS-011",
+    "reference": "rulizz",
+    "display_name": "35gx18uni",
+    "category": "pasabocas",
+    "unit_price": 26000,
+    "active": true,
+    "available": true
+  },
+  {
+    "code": "PAS-012",
+    "reference": "lissitazlimon",
+    "display_name": "10x24uni",
+    "category": "pasabocas",
+    "unit_price": 9500,
+    "active": true,
+    "available": true
+  },
+  {
+    "code": "PAS-013",
+    "reference": "tradi",
+    "display_name": "20gx12uni",
+    "category": "pasabocas",
+    "unit_price": 12000,
+    "active": true,
+    "available": true
+  },
+  {
+    "code": "PAS-014",
+    "reference": "mix",
+    "display_name": "20gx12uni",
+    "category": "pasabocas",
+    "unit_price": 12000,
+    "active": true,
+    "available": true
+  },
+  {
+    "code": "PAS-015",
+    "reference": "tostolim",
+    "display_name": "30gx12uni",
+    "category": "pasabocas",
+    "unit_price": 12000,
+    "active": true,
+    "available": true
+  },
+  {
+    "code": "PAS-016",
+    "reference": "kikecitos",
+    "display_name": "22g x 12uni",
+    "category": "pasabocas",
+    "unit_price": 9000,
+    "active": true,
+    "available": true
+  },
+  {
+    "code": "PAS-017",
+    "reference": "gritspol9",
+    "display_name": "9gx12uni - Pollo",
+    "category": "pasabocas",
+    "unit_price": 4500,
+    "active": true,
+    "available": true
+  },
+  {
+    "code": "PAS-018",
+    "reference": "gritscara9",
+    "display_name": "9gx12uni - Caramelo",
+    "category": "pasabocas",
+    "unit_price": 4500,
+    "active": true,
+    "available": true
+  },
+  {
+    "code": "PAS-019",
+    "reference": "gritspic9",
+    "display_name": "9gx12uni - Picante",
+    "category": "pasabocas",
+    "unit_price": 4500,
+    "active": true,
+    "available": true
+  },
+  {
+    "code": "PAS-020",
+    "reference": "gritspic33",
+    "display_name": "33gx12uni - Picante",
+    "category": "pasabocas",
+    "unit_price": 10200,
+    "active": true,
+    "available": true
+  },
+  {
+    "code": "PAS-021",
+    "reference": "gritsque33",
+    "display_name": "33gx12uni - Queso",
+    "category": "pasabocas",
+    "unit_price": 10200,
+    "active": true,
+    "available": true
+  },
+  {
+    "code": "PAS-022",
+    "reference": "gritsnat33",
+    "display_name": "33gx12uni - Natural",
+    "category": "pasabocas",
+    "unit_price": 10200,
+    "active": true,
+    "available": true
+  },
+  {
+    "code": "PAS-023",
+    "reference": "gritsnat50",
+    "display_name": "50gx6uni - Natural",
+    "category": "pasabocas",
+    "unit_price": 7500,
+    "active": true,
+    "available": true
+  },
+  {
+    "code": "PAS-024",
+    "reference": "tocpic",
+    "display_name": "20gx12uni - Picante",
+    "category": "pasabocas",
+    "unit_price": 12000,
+    "active": true,
+    "available": true
+  },
+  {
+    "code": "PAS-025",
+    "reference": "tocmie",
+    "display_name": "20gx12uni - Miel",
+    "category": "pasabocas",
+    "unit_price": 12000,
+    "active": true,
+    "available": true
+  },
+  {
+    "code": "PAS-026",
+    "reference": "trocpic",
+    "display_name": "15gx12uni - Picante",
+    "category": "pasabocas",
+    "unit_price": 4500,
+    "active": true,
+    "available": true
+  },
+  {
+    "code": "PAS-027",
+    "reference": "trocpol",
+    "display_name": "15gx12uni - Pollo",
+    "category": "pasabocas",
+    "unit_price": 4500,
+    "active": true,
+    "available": true
+  },
+  {
+    "code": "PAS-028",
+    "reference": "tostomadu",
+    "display_name": "30gx12uni - Maduro",
+    "category": "pasabocas",
+    "unit_price": 12000,
+    "active": true,
+    "available": true
+  },
+  {
+    "code": "PAS-029",
+    "reference": "lissitazbbq",
+    "display_name": "10x24uni - BBQ",
+    "category": "pasabocas",
+    "unit_price": 9500,
+    "active": true,
+    "available": true
+  },
+  {
+    "code": "PAS-030",
+    "reference": "lissitazhotchilli",
+    "display_name": "10x24uni - Hot chilli",
+    "category": "pasabocas",
+    "unit_price": 9500,
+    "active": true,
+    "available": true
+  },
+  {
+    "code": "PAS-031",
+    "reference": "lissitazmayonesa",
+    "display_name": "10x24uni - Mayonesa",
+    "category": "pasabocas",
+    "unit_price": 9500,
+    "active": true,
+    "available": true
+  },
+  {
+    "code": "PAS-032",
+    "reference": "lissitazpollo",
+    "display_name": "10x24uni - Pollo",
+    "category": "pasabocas",
+    "unit_price": 9500,
+    "active": true,
+    "available": true
+  }
+]
