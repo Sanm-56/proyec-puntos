@@ -21,7 +21,22 @@
     }
     function configureCart(controller) {
         const cartPanel = document.getElementById("carritoPanel"); const cartButton = document.getElementById("btnCarrito");
-        if (cartButton && cartPanel) cartButton.addEventListener("click", () => cartPanel.classList.toggle("activo"));
+        const closeButton = document.getElementById("btnCerrarCarrito"); const accountActions = document.querySelector(".auth-actions");
+        function setCartOpen(open) {
+            if (!cartPanel || !cartButton) return;
+            const wasOpen = cartPanel.classList.contains("activo");
+            cartPanel.classList.toggle("activo", open);
+            cartPanel.setAttribute("aria-hidden", String(!open));
+            cartButton.setAttribute("aria-expanded", String(open));
+            document.body.classList.toggle("cart-open", open);
+            if (accountActions) accountActions.setAttribute("aria-hidden", String(open));
+            if (open) closeButton && closeButton.focus(); else if (wasOpen) cartButton.focus();
+        }
+        if (cartButton && cartPanel) cartButton.addEventListener("click", () => setCartOpen(!cartPanel.classList.contains("activo")));
+        if (closeButton) closeButton.addEventListener("click", () => setCartOpen(false));
+        ["btnAbrirAuth", "btnAbrirCuenta", "btnAbrirAdmin"].forEach(id => { const trigger = document.getElementById(id); if (trigger) trigger.addEventListener("click", () => setCartOpen(false)); });
+        document.addEventListener("keydown", event => { if (event.key === "Escape" && cartPanel && cartPanel.classList.contains("activo")) setCartOpen(false); });
+        namespace.cartOverlay = Object.freeze({ close: () => setCartOpen(false), isOpen: () => Boolean(cartPanel && cartPanel.classList.contains("activo")) });
         document.querySelectorAll(".agregar-carrito").forEach(button => button.addEventListener("click", () => { if (button.disabled) return; try { animateAddToCart(button, cartButton); } catch (error) { /* La animacion es decorativa y no debe bloquear el pedido. */ } controller.add(button); }));
         const emptyButton = document.getElementById("btnVaciarCarrito"); const checkoutButton = document.getElementById("btnEnviarPedido");
         if (emptyButton) emptyButton.addEventListener("click", controller.empty); if (checkoutButton) checkoutButton.addEventListener("click", controller.checkout);

@@ -36,7 +36,7 @@
                 <li><a href="#contacto">Contacto</a></li>
             </ul>
             </nav>
-               <button id="btnCarrito" class="boton-carrito">
+               <button id="btnCarrito" class="boton-carrito" type="button" aria-expanded="false" aria-controls="carritoPanel">
              🛒 (<span id="contadorCarrito">0</span>)
               </button>
               <div class="auth-actions" aria-live="polite">
@@ -1253,13 +1253,13 @@
     </div>
 </section>
 <!-- PANEL CARRITO -->
-<div id="carritoPanel" class="carrito-panel">
-    <h3>🛒 TU CARRITO</h3>
+<div id="carritoPanel" class="carrito-panel" aria-hidden="true">
+    <div class="cart-panel-header"><h3>🛒 TU CARRITO</h3><button id="btnCerrarCarrito" class="cart-close" type="button" aria-label="Cerrar carrito">×</button></div>
 <ul id="listaCarrito"></ul>
 <div class="puntos-panel">
     <h4>Programa de puntos</h4>
-    <p>Ganas en este pedido: <strong><span id="puntosGanados">0</span> puntos</strong></p>
-    <p class="regla-puntos">Estimación: 1 punto por cada $1.000 comprados. La confirmación del saldo se realiza al validar el pedido.</p>
+    <p id="puntosGanadosLinea"><span id="puntosGanadosEtiqueta">Cargando programa de puntos...</span><strong id="puntosGanadosValor" hidden><span id="puntosGanados">0</span> puntos</strong></p>
+    <p class="regla-puntos">La conversión se mostrará cuando el programa esté disponible.</p>
 </div>
 <p class="total">Subtotal: $<span id="subtotalCarrito">0</span></p>
 <p class="total">Total: $<span id="totalCarrito">0</span></p>
@@ -1299,6 +1299,7 @@
 <script src="js/auth/auth.js"></script>
 <script src="js/admin/admin-auth.js"></script>
 <script src="js/delivery/delivery.js"></script>
+<script src="js/loyalty/loyalty.js"></script>
 <script src="js/account/account.js"></script>
 <script src="js/core/format.js"></script>
 <script src="js/admin/order-management.js"></script>

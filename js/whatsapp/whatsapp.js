@@ -12,7 +12,7 @@
         });
         message += `Subtotal: ${namespace.formatPrice(summary.subtotal)}\n`;
         message += `*TOTAL: ${namespace.formatPrice(summary.total)}*\n`;
-        return `${message}Puntos estimados con este pedido: ${summary.puntosGanados}`;
+        return Number.isInteger(summary.puntosGanados) ? `${message}Puntos estimados con este pedido: ${summary.puntosGanados}` : message;
     }
 
     namespace.whatsapp = { createWhatsappUrl, buildCheckoutMessage };

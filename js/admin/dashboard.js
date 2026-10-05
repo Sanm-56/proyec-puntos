@@ -122,7 +122,7 @@
         const offset = append ? state.orders.rows.length : 0;
         try {
             const result = await client().from("orders")
-                .select("id, order_number, customer_name, customer_phone, created_at, status, subtotal, total, delivery_city, delivery_neighborhood, delivery_address, delivery_instructions")
+                .select("id, order_number, customer_name, customer_phone, created_at, status, subtotal, total, points_earned, delivery_city, delivery_neighborhood, delivery_address, delivery_instructions")
                 .order("created_at", { ascending: false })
                 .range(offset, offset + pageSize);
             if (result.error) throw result.error;
@@ -186,6 +186,7 @@
         addText(container, "p", "Estado: " + statusLabel(order.status));
         addText(container, "p", "Subtotal: " + formatPrice(order.subtotal));
         addText(container, "p", "Total: " + formatPrice(order.total));
+        addText(container, "p", "Puntos del pedido: " + String(Number(order.points_earned) || 0));
         addText(container, "h5", "Entrega");
         if (!order.delivery_address) {
             addText(container, "p", "Sin información de entrega registrada.");
@@ -344,17 +345,19 @@
     }
 
     function setTab(tab, focus = false) {
-        const tabs = { summary: byId("adminTabSummary"), orders: byId("adminTabOrders"), users: byId("adminTabUsers") };
-        const panels = { summary: byId("adminSummaryPanel"), orders: byId("adminOrdersPanel"), users: byId("adminUsersPanel") };
+        const tabs = { summary: byId("adminTabSummary"), orders: byId("adminTabOrders"), users: byId("adminTabUsers"), loyalty: byId("adminTabLoyalty") };
+        const panels = { summary: byId("adminSummaryPanel"), orders: byId("adminOrdersPanel"), users: byId("adminUsersPanel"), loyalty: byId("adminLoyaltyPanel") };
         const active = Object.prototype.hasOwnProperty.call(tabs, tab) ? tab : "summary";
         state.activeTab = active;
         Object.keys(tabs).forEach(key => {
+            if (!tabs[key] || !panels[key]) return;
             const selected = key === active;
             tabs[key].setAttribute("aria-selected", String(selected));
             tabs[key].tabIndex = selected ? 0 : -1;
             panels[key].hidden = !selected;
         });
         if (focus) tabs[active].focus();
+        if (active === "loyalty" && namespace.loyalty) namespace.loyalty.loadSettings().then(namespace.loyalty.renderAdmin).catch(() => namespace.loyalty.renderAdmin());
     }
 
     async function refresh() {
@@ -393,7 +396,7 @@
     }
 
     function bindTabs() {
-        const names = ["summary", "orders", "users"];
+        const names = ["summary", "orders", "users", "loyalty"].filter(name => byId("adminTab" + name.charAt(0).toUpperCase() + name.slice(1)));
         names.forEach((name, index) => {
             const tab = byId("adminTab" + name.charAt(0).toUpperCase() + name.slice(1));
             tab.addEventListener("click", () => setTab(name));

@@ -40,18 +40,14 @@
     }
 
     function setAccountTab(tab, focus = false) {
-        const profile = tab !== "orders";
-        state.activeTab = profile ? "profile" : "orders";
-        const profileTab = byId("accountTabProfile");
-        const ordersTab = byId("accountTabOrders");
-        profileTab.setAttribute("aria-selected", String(profile));
-        ordersTab.setAttribute("aria-selected", String(!profile));
-        profileTab.tabIndex = profile ? 0 : -1;
-        ordersTab.tabIndex = profile ? -1 : 0;
-        byId("accountProfilePanel").hidden = !profile;
-        byId("accountOrdersPanel").hidden = profile;
-        if (focus) (profile ? profileTab : ordersTab).focus();
-        if (!profile && state.user && !state.history.loaded && !state.history.loading) loadOrderHistory();
+        const tabs = { profile: byId("accountTabProfile"), orders: byId("accountTabOrders"), loyalty: byId("accountTabLoyalty") };
+        const panels = { profile: byId("accountProfilePanel"), orders: byId("accountOrdersPanel"), loyalty: byId("accountLoyaltyPanel") };
+        const active = Object.prototype.hasOwnProperty.call(tabs, tab) && tabs[tab] ? tab : "profile";
+        state.activeTab = active;
+        Object.keys(tabs).forEach(name => { if (tabs[name]) { const selected = name === active; tabs[name].setAttribute("aria-selected", String(selected)); tabs[name].tabIndex = selected ? 0 : -1; panels[name].hidden = !selected; } });
+        if (focus) tabs[active].focus();
+        if (active === "orders" && state.user && !state.history.loaded && !state.history.loading) loadOrderHistory();
+        if (active === "loyalty" && state.user && namespace.loyalty) namespace.loyalty.loadAccount(state.user.id);
     }
 
     function renderAccount() {
@@ -98,6 +94,7 @@
         addText(summary, "p", "Estado: " + orderStatus(order.status));
         addText(summary, "p", "Subtotal: " + price(order.subtotal));
         addText(summary, "p", "Total: " + price(order.total));
+        if (namespace.loyalty) addText(summary, "p", namespace.loyalty.getOrderPointsState(order));
         container.appendChild(summary);
         renderDeliveryDetails(container, order);
         addText(container, "h5", "Productos");
@@ -289,14 +286,15 @@
     }
 
     function bindTabs() {
-        const tabs = [byId("accountTabProfile"), byId("accountTabOrders")];
+        const tabs = [byId("accountTabProfile"), byId("accountTabOrders"), byId("accountTabLoyalty")].filter(Boolean);
         tabs.forEach((tab, index) => {
-            tab.addEventListener("click", () => setAccountTab(index === 0 ? "profile" : "orders"));
+            const names = ["profile", "orders", "loyalty"];
+            tab.addEventListener("click", () => setAccountTab(names[index]));
             tab.addEventListener("keydown", event => {
                 if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)) return;
                 event.preventDefault();
                 const next = event.key === "Home" ? 0 : event.key === "End" ? tabs.length - 1 : (index + (event.key === "ArrowRight" ? 1 : tabs.length - 1)) % tabs.length;
-                setAccountTab(next === 0 ? "profile" : "orders", true);
+                setAccountTab(names[next], true);
             });
         });
     }

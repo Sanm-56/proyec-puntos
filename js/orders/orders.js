@@ -30,7 +30,7 @@
         const safeOffset = Number.isInteger(offset) && offset >= 0 ? offset : 0;
         const safeLimit = Number.isInteger(limit) && limit > 0 && limit <= historyPageSize ? limit : historyPageSize;
         const result = await getClient().from("orders")
-            .select("id, order_number, created_at, status, subtotal, total, delivery_city, delivery_neighborhood, delivery_address, delivery_instructions")
+            .select("id, order_number, created_at, status, subtotal, total, points_earned, delivery_city, delivery_neighborhood, delivery_address, delivery_instructions")
             .order("created_at", { ascending: false })
             .range(safeOffset, safeOffset + safeLimit);
         if (result.error) throw result.error;
@@ -156,7 +156,7 @@
         clearRequestId();
         if (typeof clearCart === "function") clearCart(cart);
         const trustedTotal = Number(order.total);
-        const trustedSummary = { subtotal: Number(order.subtotal), total: trustedTotal, puntosGanados: Math.floor(trustedTotal / 1000) };
+        const trustedSummary = { subtotal: Number(order.subtotal), total: trustedTotal };
         const message = "Pedido: " + order.order_number + "\n\n" + namespace.whatsapp.buildCheckoutMessage(cart, trustedSummary);
         const whatsappUrl = namespace.whatsapp.createWhatsappUrl(message);
         setStatus("Pedido " + order.order_number + " guardado. Total confirmado: " + namespace.formatPrice(trustedTotal) + ".");
