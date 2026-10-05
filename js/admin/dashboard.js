@@ -122,7 +122,7 @@
         const offset = append ? state.orders.rows.length : 0;
         try {
             const result = await client().from("orders")
-                .select("id, order_number, customer_name, customer_phone, created_at, status, subtotal, total")
+                .select("id, order_number, customer_name, customer_phone, created_at, status, subtotal, total, delivery_city, delivery_neighborhood, delivery_address, delivery_instructions")
                 .order("created_at", { ascending: false })
                 .range(offset, offset + pageSize);
             if (result.error) throw result.error;
@@ -186,6 +186,15 @@
         addText(container, "p", "Estado: " + statusLabel(order.status));
         addText(container, "p", "Subtotal: " + formatPrice(order.subtotal));
         addText(container, "p", "Total: " + formatPrice(order.total));
+        addText(container, "h5", "Entrega");
+        if (!order.delivery_address) {
+            addText(container, "p", "Sin información de entrega registrada.");
+        } else {
+            addText(container, "p", "Ciudad/Municipio: " + (order.delivery_city || "No disponible"));
+            if (order.delivery_neighborhood) addText(container, "p", "Barrio: " + order.delivery_neighborhood);
+            addText(container, "p", "Dirección: " + order.delivery_address);
+            if (order.delivery_instructions) addText(container, "p", "Indicaciones: " + order.delivery_instructions);
+        }
         addText(container, "h5", "Productos");
         const itemList = document.createElement("div");
         itemList.className = "admin-order-items";

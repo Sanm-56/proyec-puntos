@@ -77,6 +77,18 @@
         addText(parent, "p", label + ": " + value, "order-item-value");
     }
 
+    function renderDeliveryDetails(container, order) {
+        addText(container, "h5", "Entrega");
+        if (!order.delivery_address) {
+            addText(container, "p", "Sin información de entrega registrada.", "account-history-message");
+            return;
+        }
+        addItemDetail(container, "Ciudad/Municipio", order.delivery_city || "No disponible");
+        if (order.delivery_neighborhood) addItemDetail(container, "Barrio", order.delivery_neighborhood);
+        addItemDetail(container, "Dirección", order.delivery_address);
+        if (order.delivery_instructions) addItemDetail(container, "Indicaciones", order.delivery_instructions);
+    }
+
     function renderOrderDetails(container, order, items) {
         container.replaceChildren();
         addText(container, "h4", "Pedido " + (order.order_number || ""));
@@ -87,6 +99,7 @@
         addText(summary, "p", "Subtotal: " + price(order.subtotal));
         addText(summary, "p", "Total: " + price(order.total));
         container.appendChild(summary);
+        renderDeliveryDetails(container, order);
         addText(container, "h5", "Productos");
         if (!items.length) {
             addText(container, "p", "No se encontraron productos para este pedido.", "account-history-message");
@@ -212,8 +225,18 @@
             state.role = namespace.adminAuth && namespace.adminAuth.isAdmin() ? "admin" : "user";
             renderAccount();
             message("Cuenta lista.");
+            loadDefaultAddress(userId);
         } catch (_) {
             message("No fue posible cargar tu cuenta. Intenta nuevamente.", true);
+        }
+    }
+
+    async function loadDefaultAddress(userId) {
+        if (!namespace.delivery || !namespace.delivery.getDefaultAddress) return;
+        try {
+            await namespace.delivery.getDefaultAddress(userId);
+        } catch (_) {
+            // Delivery defaults are optional and may not be deployed yet; core account data remains available.
         }
     }
 
@@ -294,6 +317,6 @@
         if (namespace.auth && namespace.auth.getUser) namespace.auth.getUser().then(result => handleAuthState(result && result.data && result.data.user));
     }
 
-    namespace.account = { loadOwnProfile, updateOwnProfile, renderAccount, openAccount, closeAccount, refresh, handleAuthState, loadOrderHistory };
+    namespace.account = { loadOwnProfile, updateOwnProfile, renderAccount, openAccount, closeAccount, refresh, handleAuthState, loadOrderHistory, getProfile: () => state.profile && { ...state.profile } };
     document.addEventListener("DOMContentLoaded", bind);
 }(window.GoTienda = window.GoTienda || {}));

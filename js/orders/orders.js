@@ -18,18 +18,10 @@
         button.textContent = isBusy ? "Guardando pedido..." : button.dataset.defaultText;
     }
 
-    function getClient() {
-        return namespace.supabase && namespace.supabase.client;
-    }
+    function getClient() { return namespace.supabase && namespace.supabase.client; }
 
     function statusLabel(status) {
-        const labels = {
-            pending: "Pendiente",
-            confirmed: "Confirmado",
-            preparing: "En preparación",
-            completed: "Completado",
-            cancelled: "Cancelado"
-        };
+        const labels = { pending: "Pendiente", confirmed: "Confirmado", preparing: "En preparación", completed: "Completado", cancelled: "Cancelado" };
         return labels[status] || "Estado no disponible";
     }
 
@@ -38,7 +30,7 @@
         const safeOffset = Number.isInteger(offset) && offset >= 0 ? offset : 0;
         const safeLimit = Number.isInteger(limit) && limit > 0 && limit <= historyPageSize ? limit : historyPageSize;
         const result = await getClient().from("orders")
-            .select("id, order_number, created_at, status, subtotal, total")
+            .select("id, order_number, created_at, status, subtotal, total, delivery_city, delivery_neighborhood, delivery_address, delivery_instructions")
             .order("created_at", { ascending: false })
             .range(safeOffset, safeOffset + safeLimit);
         if (result.error) throw result.error;
@@ -56,44 +48,35 @@
         return Array.isArray(result.data) ? result.data : [];
     }
 
-    function cartFingerprint(items) {
-        return items.map(item => item.code + ":" + item.quantity).sort().join("|");
+    function checkoutFingerprint(items, delivery, saveAsDefault) {
+        const cart = items.map(item => item.code + ":" + item.quantity).sort().join("|");
+        return [cart, "city:" + delivery.city, "neighborhood:" + delivery.neighborhood, "address:" + delivery.address, "instructions:" + delivery.instructions, "save:" + (saveAsDefault ? "1" : "0")].join("|");
     }
 
     function createRequestId() {
-        if (!window.crypto || typeof window.crypto.randomUUID !== "function") {
-            throw new Error("REQUEST_ID_UNAVAILABLE");
-        }
+        if (!window.crypto || typeof window.crypto.randomUUID !== "function") throw new Error("REQUEST_ID_UNAVAILABLE");
         return window.crypto.randomUUID();
     }
 
-    function getRequestId(fingerprint) {
+    function getRequestId(fingerprint, delivery, saveAsDefault) {
         try {
             const saved = JSON.parse(sessionStorage.getItem(pendingKey) || "null");
-            if (saved && saved.cartFingerprint === fingerprint && typeof saved.requestId === "string") {
-                return saved.requestId;
-            }
+            if (saved && saved.fingerprint === fingerprint && typeof saved.requestId === "string") return saved.requestId;
             const requestId = createRequestId();
-            sessionStorage.setItem(pendingKey, JSON.stringify({ requestId, cartFingerprint: fingerprint, createdAt: Date.now() }));
+            sessionStorage.setItem(pendingKey, JSON.stringify({ requestId, fingerprint, delivery, saveAsDefault: Boolean(saveAsDefault), createdAt: Date.now() }));
             return requestId;
-        } catch (error) {
+        } catch (_) {
             throw new Error("REQUEST_ID_UNAVAILABLE");
         }
     }
 
     function clearRequestId() {
-        try {
-            sessionStorage.removeItem(pendingKey);
-        } catch (error) {
-            // Storage is only an idempotency aid; a failed cleanup is safe.
-        }
+        try { sessionStorage.removeItem(pendingKey); } catch (_) { /* Storage is only an idempotency aid. */ }
     }
 
     function buildItems(cart) {
         const quantities = new Map();
-        if (!namespace.products || typeof namespace.products.getByReference !== "function") {
-            throw new Error("CATALOG_UNAVAILABLE");
-        }
+        if (!namespace.products || typeof namespace.products.getByReference !== "function") throw new Error("CATALOG_UNAVAILABLE");
         cart.forEach(item => {
             const product = namespace.products.getByReference(item.nombre);
             if (!product || !product.code) throw new Error("UNKNOWN_PRODUCT");
@@ -110,6 +93,11 @@
         const message = String(error && error.message || error || "").toUpperCase();
         if (message.includes("AUTH_REQUIRED")) return "Inicia sesión antes de guardar tu pedido.";
         if (message.includes("PROFILE_INCOMPLETE")) return "Completa tu perfil antes de guardar el pedido.";
+        if (message.includes("DELIVERY_CITY_INVALID")) return "Revisa la ciudad o municipio de entrega.";
+        if (message.includes("DELIVERY_ADDRESS_INVALID")) return "Revisa la dirección de entrega.";
+        if (message.includes("DELIVERY_NEIGHBORHOOD_INVALID")) return "Revisa el barrio ingresado.";
+        if (message.includes("DELIVERY_INSTRUCTIONS_INVALID")) return "Revisa las indicaciones de entrega.";
+        if (message.includes("DELIVERY_REQUIRED")) return "Completa la información de entrega.";
         if (message.includes("PRODUCT_UNAVAILABLE")) return "Uno o más productos ya no están disponibles. Revisa tu carrito.";
         if (message.includes("PRODUCT_INACTIVE")) return "Uno o más productos ya no están activos. Revisa tu carrito.";
         if (message.includes("UNKNOWN_PRODUCT")) return "No fue posible validar un producto del carrito. Revisa el catálogo.";
@@ -131,66 +119,40 @@
         fallback.hidden = false;
     }
 
-    async function checkout(cart, clearCart) {
-        if (!Array.isArray(cart) || !cart.length) {
-            setStatus("El carrito está vacío.", true);
-            return;
-        }
-        if (!getClient()) {
-            setStatus("El servicio de pedidos no está disponible en este momento.", true);
-            return;
-        }
-
-        let session;
-        try {
-            session = await getSession();
-        } catch (error) {
-            setStatus("No se pudo verificar tu sesión. Tu carrito se conserva.", true);
-            return;
-        }
-        if (!session) {
-            setStatus("Inicia sesión para guardar tu pedido. Tu carrito permanece intacto.", true);
-            const authButton = byId("btnAbrirAuth");
-            if (authButton) authButton.click();
-            return;
-        }
-
-        let items;
+    async function submitCheckout(cart, clearCart, items, delivery, saveAsDefault) {
         let requestId;
         try {
-            items = buildItems(cart);
-            requestId = getRequestId(cartFingerprint(items));
+            requestId = getRequestId(checkoutFingerprint(items, delivery, saveAsDefault), delivery, saveAsDefault);
         } catch (error) {
             setStatus(errorMessage(error), true);
-            return;
+            return false;
         }
-
         setBusy(true);
         setStatus("Guardando tu pedido...");
         let result;
         try {
             result = await getClient().rpc("create_order_from_cart", {
                 p_items: items,
-                p_client_request_id: requestId
+                p_client_request_id: requestId,
+                p_delivery: delivery,
+                p_save_as_default: saveAsDefault
             });
         } catch (error) {
             setBusy(false);
             setStatus(errorMessage(error), true);
-            return;
+            return false;
         }
         setBusy(false);
         const { data, error } = result;
         if (error) {
             setStatus(errorMessage(error), true);
-            return;
+            return false;
         }
-
         const order = Array.isArray(data) ? data[0] : data;
         if (!order || !order.order_number || !Number.isFinite(Number(order.total))) {
             setStatus("El pedido no devolvió una confirmación válida. Tu carrito se conserva.", true);
-            return;
+            return false;
         }
-
         clearRequestId();
         if (typeof clearCart === "function") clearCart(cart);
         const trustedTotal = Number(order.total);
@@ -201,8 +163,30 @@
         showWhatsappFallback(whatsappUrl);
         const popup = window.open(whatsappUrl, "_blank", "noopener,noreferrer");
         if (!popup) setStatus("Pedido " + order.order_number + " guardado. Usa el enlace para abrir WhatsApp.");
-        return order;
+        return { ...order, delivery: { ...delivery } };
     }
 
-    namespace.orders = Object.freeze({ checkout, buildItems, errorMessage, getMyOrders, getOrderDetails, statusLabel, historyPageSize });
+    async function checkout(cart, clearCart) {
+        if (!Array.isArray(cart) || !cart.length) return setStatus("El carrito está vacío.", true);
+        if (!getClient()) return setStatus("El servicio de pedidos no está disponible en este momento.", true);
+        let session;
+        try { session = await getSession(); } catch (_) { return setStatus("No se pudo verificar tu sesión. Tu carrito se conserva.", true); }
+        if (!session) {
+            setStatus("Inicia sesión para guardar tu pedido. Tu carrito permanece intacto.", true);
+            const authButton = byId("btnAbrirAuth");
+            if (authButton) authButton.click();
+            return;
+        }
+        let items;
+        try { items = buildItems(cart); } catch (error) { return setStatus(errorMessage(error), true); }
+        if (!namespace.delivery || !namespace.delivery.openCheckout) return setStatus("La confirmación de entrega no está disponible en este momento.", true);
+        await namespace.delivery.openCheckout({
+            userId: session.user && session.user.id,
+            profile: namespace.account && namespace.account.getProfile ? namespace.account.getProfile() : null,
+            onConfirm: (delivery, saveAsDefault) => submitCheckout(cart, clearCart, items, delivery, saveAsDefault),
+            onCancel: clearRequestId
+        });
+    }
+
+    namespace.orders = Object.freeze({ checkout, buildItems, errorMessage, getMyOrders, getOrderDetails, statusLabel, historyPageSize, clearPendingCheckout: clearRequestId });
 }(window.GoTienda = window.GoTienda || {}));
