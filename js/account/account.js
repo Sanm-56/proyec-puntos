@@ -3,6 +3,7 @@
     const initialHistory = () => ({ orders: [], details: new Map(), hasMore: false, loaded: false, loading: false });
     const state = { user: null, profile: null, role: "user", saving: false, activeTab: "profile", history: initialHistory() };
     const client = () => namespace.supabase && namespace.supabase.isAvailable() ? namespace.supabase.client : null;
+    let focusReturnTarget = null;
     const message = (text, error = false) => { const element = byId("accountMessage"); element.textContent = text; element.classList.toggle("auth-error", error); };
     const historyMessage = (text, error = false) => { const element = byId("orderHistoryMessage"); element.textContent = text; element.classList.toggle("auth-error", error); };
     const formatDate = value => { try { return new Intl.DateTimeFormat("es-CO", { dateStyle: "long" }).format(new Date(value)); } catch (_) { return "No disponible"; } };
@@ -35,8 +36,14 @@
 
     function closeAccount() {
         const modal = byId("accountModal");
+        if (!modal) return;
+        const entry = byId("btnAbrirCuenta");
+        const target = [focusReturnTarget, entry].find(node => node && node.isConnected && !node.hidden && !node.disabled && !modal.contains(node));
+        if (target) target.focus();
+        else if (modal.contains(document.activeElement)) document.activeElement.blur();
         modal.hidden = true;
         modal.setAttribute("aria-hidden", "true");
+        focusReturnTarget = null;
     }
 
     function setAccountTab(tab, focus = false) {
@@ -274,9 +281,10 @@
         }
     }
 
-    function openAccount() {
+    function openAccount(trigger) {
         if (!state.user) return;
         const modal = byId("accountModal");
+        focusReturnTarget = trigger && trigger.isConnected && !modal.contains(trigger) ? trigger : byId("btnAbrirCuenta");
         modal.hidden = false;
         modal.setAttribute("aria-hidden", "false");
         if (state.profile) renderAccount();
@@ -313,7 +321,7 @@
     }
 
     function bind() {
-        byId("btnAbrirCuenta").addEventListener("click", openAccount);
+        byId("btnAbrirCuenta").addEventListener("click", event => openAccount(event.currentTarget));
         byId("btnCerrarCuenta").addEventListener("click", closeAccount);
         byId("btnCerrarSesionCuenta").addEventListener("click", () => namespace.auth && namespace.auth.signOut());
         byId("accountForm").addEventListener("submit", event => { event.preventDefault(); updateOwnProfile(event.currentTarget); });

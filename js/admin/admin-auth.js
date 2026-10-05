@@ -3,6 +3,7 @@
     const listeners = new Set();
     const state = { user: null, role: null, isAdmin: false, loading: false, requestVersion: 0 };
     const client = () => namespace.supabase && namespace.supabase.isAvailable() ? namespace.supabase.client : null;
+    let focusReturnTarget = null;
 
     function snapshot() {
         return Object.freeze({ role: state.role, isAdmin: state.isAdmin, loading: state.loading });
@@ -22,8 +23,13 @@
     function closeAdmin() {
         const modal = byId("adminModal");
         if (!modal) return;
+        const entry = byId("btnAbrirAdmin");
+        const target = [focusReturnTarget, entry].find(node => node && node.isConnected && !node.hidden && !node.disabled && !modal.contains(node));
+        if (target) target.focus();
+        else if (modal.contains(document.activeElement)) document.activeElement.blur();
         modal.hidden = true;
         modal.setAttribute("aria-hidden", "true");
+        focusReturnTarget = null;
     }
 
     function clear() {
@@ -80,9 +86,10 @@
         byId("adminShellContent").hidden = !authorized;
     }
 
-    function openAdmin() {
+    function openAdmin(trigger) {
         const modal = byId("adminModal");
         if (!modal) return false;
+        focusReturnTarget = trigger && trigger.isConnected && !modal.contains(trigger) ? trigger : byId("btnAbrirAdmin");
         const authorized = state.isAdmin;
         setModalContent(
             authorized ? "Panel de administración" : "Acceso restringido",
@@ -106,7 +113,7 @@
         const open = byId("btnAbrirAdmin");
         const close = byId("btnCerrarAdmin");
         const modal = byId("adminModal");
-        if (open) open.addEventListener("click", openAdmin);
+        if (open) open.addEventListener("click", event => openAdmin(event.currentTarget));
         if (close) close.addEventListener("click", closeAdmin);
         if (modal) modal.addEventListener("click", event => { if (event.target === modal) closeAdmin(); });
         document.addEventListener("keydown", event => { if (event.key === "Escape" && modal && !modal.hidden) closeAdmin(); });

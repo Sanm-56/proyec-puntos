@@ -3,6 +3,7 @@
     const client = () => namespace.supabase && namespace.supabase.client;
     let recoveryActive = false;
     let recoveryWaiting = false;
+    let focusReturnTarget = null;
 
     function setMessage(text, error = false) {
         const node = byId("authMessage");
@@ -43,6 +44,7 @@
         ["accountModal", "adminModal"].forEach(id => {
             const modal = byId(id);
             if (modal) {
+                if (modal.contains(document.activeElement)) document.activeElement.blur();
                 modal.hidden = true;
                 modal.setAttribute("aria-hidden", "true");
             }
@@ -181,12 +183,18 @@
 
     function close() {
         const modal = byId("authModal");
+        const entry = byId("btnAbrirAuth");
+        const target = [focusReturnTarget, entry].find(node => node && node.isConnected && !node.hidden && !node.disabled && !modal.contains(node));
+        if (target) target.focus();
+        else if (modal.contains(document.activeElement)) document.activeElement.blur();
         modal.hidden = true;
         modal.setAttribute("aria-hidden", "true");
+        focusReturnTarget = null;
     }
 
-    function open(mode = "login", preserveMessage = false) {
+    function open(mode = "login", preserveMessage = false, trigger) {
         const modal = byId("authModal");
+        if (modal.hidden) focusReturnTarget = trigger && trigger.isConnected && !modal.contains(trigger) ? trigger : document.activeElement;
         modal.hidden = false;
         modal.setAttribute("aria-hidden", "false");
         show(mode, preserveMessage);
@@ -346,7 +354,7 @@
 
     function bind() {
         ensureRecoveryUi();
-        byId("btnAbrirAuth").addEventListener("click", () => open());
+        byId("btnAbrirAuth").addEventListener("click", event => open("login", false, event.currentTarget));
         byId("btnCerrarAuth").addEventListener("click", dismissAuthModal);
         byId("btnCerrarSesion").addEventListener("click", signOut);
         byId("mostrarRegistro").addEventListener("click", () => open("register"));
