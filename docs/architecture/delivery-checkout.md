@@ -62,3 +62,5 @@ Addresses are not placed in localStorage, URLs, query parameters, logs, or analy
 ## WhatsApp F6.1 Integration
 
 F4.4B preserves the current WhatsApp handoff. F6.1 can use the confirmed delivery snapshot carried by the successful checkout context.
+
+F6.1 reloads the persisted delivery snapshot through RLS before sending it to WhatsApp, so the in-memory confirmation is not message authority.

@@ -24,6 +24,8 @@ The cart reads the singleton loyalty setting and displays an explicitly estimate
 
 The checkout database function calculates the authoritative snapshot. A configuration change between cart display and checkout may change the future order's stored points; the UI does not force its estimate into the order.
 
+WhatsApp customer-service messages use the persisted `orders.points_earned` snapshot, not the current conversion.
+
 ## Admin Configuration
 
 The existing admin dashboard gains a Puntos tab with current conversion, enabled status, ratio inputs, preview examples, future-orders warning, confirmation, loading state, and safe errors. It calls only `admin_update_loyalty_settings` after the existing admin UX check; server authorization remains authoritative.

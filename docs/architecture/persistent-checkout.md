@@ -14,6 +14,10 @@ An authenticated user is required. Cart validation opens delivery confirmation; 
 
 The browser stores a UUID plus a deterministic fingerprint containing cart code/quantity, normalized delivery values, and save-default choice in sessionStorage. A retry of the same payload reuses the UUID so create_order_from_cart returns the same order. A cart or delivery change gets a new UUID. This pending technical state is removed after success, intentional cancellation, or sign-out.
 
+## WhatsApp Customer Service
+
+After persistence succeeds, the browser reloads the RLS-authorized order and its item snapshots before preparing the WhatsApp handoff. Persisted total, delivery, status, and points are authoritative.
+
 ## Authority
 
 The existing JavaScript prices and point estimate remain display-only. PostgreSQL validates product codes and availability, calculates the total from catalog_products, snapshots items, and creates the order. Points remain zero server-side until the dedicated loyalty phase.

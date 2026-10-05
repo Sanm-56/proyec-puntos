@@ -177,7 +177,20 @@
             details.className = "order-history-details";
             details.hidden = true;
             button.addEventListener("click", () => toggleOrderDetails(order, button, details));
-            card.append(button, details);
+            const support = document.createElement("button");
+            support.className = "auth-link order-support-toggle";
+            support.type = "button";
+            support.textContent = "Consultar pedido por WhatsApp";
+            support.setAttribute("aria-label", "Consultar pedido " + (order.order_number || "") + " por WhatsApp");
+            support.addEventListener("click", async () => {
+                if (!namespace.whatsapp || !order.order_number) return;
+                support.disabled = true;
+                support.textContent = "Preparando WhatsApp...";
+                try { await namespace.whatsapp.openOrderSupport(order.order_number); }
+                catch (_) { historyMessage("No pudimos preparar la consulta de este pedido.", true); }
+                finally { support.disabled = false; support.textContent = "Consultar pedido por WhatsApp"; }
+            });
+            card.append(button, support, details);
             list.appendChild(card);
         });
         more.hidden = !state.history.hasMore;

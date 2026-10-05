@@ -156,13 +156,17 @@
         clearRequestId();
         if (typeof clearCart === "function") clearCart(cart);
         const trustedTotal = Number(order.total);
-        const trustedSummary = { subtotal: Number(order.subtotal), total: trustedTotal };
-        const message = "Pedido: " + order.order_number + "\n\n" + namespace.whatsapp.buildCheckoutMessage(cart, trustedSummary);
-        const whatsappUrl = namespace.whatsapp.createWhatsappUrl(message);
+        setStatus("Pedido " + order.order_number + " guardado. Preparando WhatsApp...");
+        let whatsappResult;
+        try {
+            whatsappResult = await namespace.whatsapp.openPersistedOrder(order.order_number);
+        } catch (_) {
+            const fallbackMessage = "Hola, quiero continuar con mi pedido " + order.order_number + ".\n\nEl pedido ya fue registrado en GO TIENDA.";
+            whatsappResult = namespace.whatsapp.openMessage(fallbackMessage);
+        }
         setStatus("Pedido " + order.order_number + " guardado. Total confirmado: " + namespace.formatPrice(trustedTotal) + ".");
-        showWhatsappFallback(whatsappUrl);
-        const popup = window.open(whatsappUrl, "_blank", "noopener,noreferrer");
-        if (!popup) setStatus("Pedido " + order.order_number + " guardado. Usa el enlace para abrir WhatsApp.");
+        showWhatsappFallback(whatsappResult.url);
+        if (!whatsappResult.opened) setStatus("Pedido " + order.order_number + " guardado. Usa el enlace para abrir WhatsApp.");
         return { ...order, delivery: { ...delivery } };
     }
 
